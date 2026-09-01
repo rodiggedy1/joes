@@ -25,7 +25,7 @@ const serviceCards = [
   ["🌿", "Lawn & yard care", "Mowing, trimming, cleanup and routine outdoor maintenance.", "lawn and yard care", "/services/lawn-care"],
   ["🚚", "Moving help", "Loading, unloading, heavy lifting and in-home furniture moves.", "moving help", "/services/moving-help"],
   ["🗑️", "Junk removal", "Furniture, appliances, garage cleanouts and unwanted items.", "junk removal", "/services/junk-removal"],
-  ["💦", "Pressure washing", "Driveways, patios, walkways, siding and outdoor surfaces.", "pressure washing"],
+  ["💦", "Pressure washing", "Driveways, patios, walkways, siding and outdoor surfaces.", "pressure washing", "/services/pressure-washing"],
 ];
 
 const categories = ["Carpet cleaning", "Window cleaning", "Interior painting", "Gutter cleaning", "Appliance help", "Pest control", "Plumbing", "Electrical", "HVAC", "Smart home setup", "Pool care", "Garage door"];
