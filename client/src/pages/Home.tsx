@@ -37,6 +37,12 @@ const heroGuidePrompts = [
   "My backyard is getting out of control...",
   "I need help mounting a 65-inch TV in my living room...",
   "I need the front walkway and back patio cleaned before guests arrive...",
+  "There’s water under my kitchen sink.",
+  "I need this old couch hauled away.",
+  "Can someone pressure wash the patio?",
+  "I rented a truck, I just need help loading it.",
+  "I have a bunch of little things around the house that need fixing.",
+  "My Airbnb needs to be turned over tomorrow.",
 ];
 
 export default function Home() {
