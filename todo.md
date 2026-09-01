@@ -1,0 +1,4 @@
+- [x] Transcribe the supplied Joe’s Home Services HTML, CSS, and JavaScript into the React project without altering copy or behavior.
+- [x] Verify the chat widget, embedded request form, service actions, and booking modal behavior.
+- [x] Check desktop and mobile presentation against the supplied responsive styles.
+- [ ] Save a final checkpoint and deliver the project version.
