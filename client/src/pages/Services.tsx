@@ -1,6 +1,6 @@
 /**
  * Design reference: original category-led service directory inspired by the user's requested browsing model.
- * Maintain Joe's warm white editorial surface, charcoal utility typography, lime actions, and image-led popular services.
+ * Maintain Good House Co.'s warm white editorial surface, charcoal utility typography, lime actions, and image-led popular services.
  */
 import { useState } from "react";
 import { useLocation } from "wouter";
@@ -110,14 +110,14 @@ export default function Services() {
   return (
     <div className="site services-page">
       <header className="services-header">
-        <a href="/" className="brand brand-link" aria-label="Return to Joe's Home Services home page"><div className="logo">J</div><div><strong>Joe&apos;s Home Services</strong><small>Cleaning · Handyman · Home Care</small></div></a>
+        <a href="/" className="brand brand-link" aria-label="Return to Good House Co. home page"><div className="logo"><img className="brand-mark" src="/manus-storage/good-house-co-mark_c955cb98.png" alt="" /></div><div><strong>Good House Co.</strong><small>The good kind of help for home</small></div></a>
         <nav className="nav" aria-label="Main navigation"><a className="nav-active" href="/services">Services</a><a href="/#reviews">Reviews</a><a href="/#about">About</a></nav>
         <button className="btn" onClick={() => startRequest("a home service")}>Book now</button>
       </header>
 
       <main>
         <section className="services-hero-page">
-          <div className="services-hero-copy"><div className="eyebrow">Joe&apos;s Home Services</div><h1>One home.<br /><em>More handled.</em></h1><p>Browse the job by category, then choose the kind of help you need. Don’t see the exact words? Just describe the job instead.</p><button className="btn" onClick={() => startRequest("a home service")}>Tell Joe&apos;s AI what you need ✨</button></div>
+          <div className="services-hero-copy"><div className="eyebrow">Good House Co.</div><h1>One home.<br /><em>More handled.</em></h1><p>Browse the job by category, then choose the kind of help you need. Don’t see the exact words? Just describe the job instead.</p><button className="btn" onClick={() => startRequest("a home service")}>Tell Good House what you need ✨</button></div>
           <div className="services-hero-note"><span className="note-mark">✦</span><p>Start in plain language. The assistant helps clarify the scope and turn the request into a booking path.</p><div><span>1</span> Describe it <i /> <span>2</span> Review the plan <i /> <span>3</span> Book it</div></div>
         </section>
 
@@ -141,7 +141,7 @@ export default function Services() {
         <section className="services-cta"><div><div className="eyebrow">Not sure what to call the job?</div><h2>Describe it your way.</h2><p>“The bathroom faucet won’t stop dripping” is a perfectly good place to start.</p></div><button className="btn" onClick={() => startRequest("I need help with a job around my home")}>Start a request →</button></section>
       </main>
 
-      <footer><a href="/" className="brand brand-link"><div className="logo">J</div><strong>Joe&apos;s Home Services</strong></a><span>Cleaning · Handyman · Home Care</span><span>Tell us what needs doing</span></footer>
+      <footer><a href="/" className="brand brand-link"><div className="logo"><img className="brand-mark" src="/manus-storage/good-house-co-mark_c955cb98.png" alt="" /></div><strong>Good House Co.</strong></a><span>The good kind of help for home</span><span>Tell us what needs doing</span></footer>
     </div>
   );
 }
