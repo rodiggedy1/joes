@@ -14,7 +14,7 @@ const categoryOrder = [
 
 const catalog: Record<string, Service[]> = {
   Popular: [
-    { title: "Home cleaning", description: "Regular resets, deeper cleanups, and move-day refreshes shaped around your home.", request: "home cleaning", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/GIaGFBZcskrjlLsK.jpg", accent: "Cleaning" },
+    { title: "Home cleaning", description: "Regular resets, deeper cleanups, and move-day refreshes shaped around your home.", request: "home cleaning", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/GIaGFBZcskrjlLsK.jpg", accent: "Cleaning", detailPath: "/services/cleaning" },
     { title: "TV & wall mounting", description: "Televisions, soundbars, shelves, and cleaner cable setups for the room you use most.", request: "TV mounting", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/baSoauykNRogxOrL.jpg", accent: "TV & electronics" },
     { title: "Furniture assembly", description: "Beds, desks, dressers, shelving, and the just-delivered pieces that need a steady hand.", request: "furniture assembly", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/ApnFdzxltPesPxZG.jpg", accent: "Assembly" },
     { title: "Handyman & repairs", description: "Punch lists, hardware, minor repairs, trim work, and jobs that have been waiting.", request: "a handyman repair", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/sJkZbYPnJljBXNVv.jpg", accent: "General handyman", detailPath: "/services/handyman" },

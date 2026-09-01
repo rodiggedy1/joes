@@ -18,8 +18,8 @@ function classify(text: string): Quote {
 }
 
 const serviceCards = [
-  ["🧹", "House cleaning", "Standard, deep, move-in, move-out and recurring cleaning.", "home cleaning"],
-  ["🔨", "Handyman", "Small repairs, punch lists, hanging, patching and installations.", "a handyman repair"],
+  ["🧹", "House cleaning", "Standard, deep, move-in, move-out and recurring cleaning.", "home cleaning", "/services/cleaning"],
+  ["🔨", "Handyman", "Small repairs, punch lists, hanging, patching and installations.", "a handyman repair", "/services/handyman"],
   ["📺", "TV mounting", "TVs, soundbars, shelves and clean cable-management setups.", "TV mounting"],
   ["🪑", "Furniture assembly", "Beds, desks, dressers, shelving and outdoor furniture.", "furniture assembly"],
   ["🌿", "Lawn & yard care", "Mowing, trimming, cleanup and routine outdoor maintenance.", "lawn and yard care"],
@@ -78,7 +78,7 @@ export default function Home() {
           </div>
         </section>
         <section className="services-intro" id="services"><div className="eyebrow">Popular services</div><h2>One place for the jobs around your home.</h2><p>From recurring upkeep to the random thing that needs fixing today. Tell Good House what you need and we&apos;ll guide you from request to booked.</p></section>
-        <section className="services">{serviceCards.map(([icon, title, copy, request]) => <button className="service service-link" key={title} onClick={() => openChat(`I need help with ${request}.`)} aria-label={`Book ${title}`}><span className="arrow">↗</span><span className="icon">{icon}</span><h3>{title}</h3><p>{copy}</p></button>)}</section>
+        <section className="services">{serviceCards.map(([icon, title, copy, request, detailPath]) => detailPath ? <a className="service service-link" key={title} href={detailPath} aria-label={`Explore ${title}`}><span className="arrow">↗</span><span className="icon">{icon}</span><h3>{title}</h3><p>{copy}</p></a> : <button className="service service-link" key={title} onClick={() => openChat(`I need help with ${request}.`)} aria-label={`Book ${title}`}><span className="arrow">↗</span><span className="icon">{icon}</span><h3>{title}</h3><p>{copy}</p></button>)}</section>
         <section className="home-story-additive"><div className="home-story-image"><img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/BClOvCghntZBcfpv.jpg" alt="A bright, neatly reset living room" /></div><div className="home-story-copy"><div className="eyebrow">A home that feels lighter</div><h2>The best help removes more than a task.</h2><p>Start with what is getting in your way. Cleaning, repairs, setup, or an entire moving-day list—we&apos;ll help make the request clear.</p><button className="story-action" onClick={() => openChat("I need help getting my home back in order.")}>Describe your list <b>→</b></button></div></section>
         <section className="anything"><div><div className="eyebrow">Don’t see it?</div><h3>Just ask. That’s the point.</h3><p>Describe the job in your own words. If it’s something we can get handled, Good House will take it from there.</p></div><button className="btn" onClick={() => openChat()}>Tell us what you need →</button></section>
         <section className="dedicated-strip"><div><div className="eyebrow">Option 3 · Dedicated booking page</div><h2>A booking link that goes anywhere.</h2><p>Use it in Google Business Profile, Instagram, SMS, ads, QR codes or email. The customer lands directly in the AI booking experience.</p></div><button className="btn secondary" onClick={() => setModalOpen(true)}>Open booking page →</button></section>
