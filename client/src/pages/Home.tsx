@@ -48,7 +48,7 @@ const heroGuidePrompts = [
 ];
 
 function JoeMark({ className = "" }: { className?: string }) {
-  return <img className={className} src="/manus-storage/good-joe-portrait-logo_09a44db0.png" alt="" />;
+  return <img className={className} src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/apIuKKSUqsXgqXHN.png" alt="" />;
 }
 
 export default function Home() {
@@ -96,7 +96,7 @@ export default function Home() {
             <p>Cleaning, repairs, lawn care, maintenance and more — one place to get anything around your home done.</p>
             <div className="actions reference-actions"><button className="btn" onClick={() => openChat()}>Get price &amp; availability <ArrowRight aria-hidden="true" /></button><a className="btn secondary" href="/services">View services <Grid2X2 aria-hidden="true" /></a></div>
             <div className="trust reference-trust"><span><ShieldCheck aria-hidden="true" />Insured<br />professionals</span><span><CalendarDays aria-hidden="true" />Easy<br />rescheduling</span><span><LockKeyhole aria-hidden="true" />Secure<br />payment</span></div>
-            <div className="reference-people" aria-hidden="true"><img src="/manus-storage/good-joe-people-cluster_7d2cd121.png" alt="" /></div>
+            <div className="reference-people" aria-hidden="true"><img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/hBEbQuFuinkLlPOa.png" alt="" /></div>
           </div>
           <div className="embed reference-guide">
             <div className="reference-guide-main"><div className="eyebrow">Good Joe Guide</div><h2>What can we help with?</h2><p>Ask a question or describe the job. When you&apos;re ready, the right booking form is one click away.</p>
