@@ -5,7 +5,6 @@
 import { useEffect, useState } from "react";
 import BookingAssistant from "./BookingAssistant";
 import "./ServiceMoments.css";
-import "./hero-conversation.css";
 
 type Quote = { service: string; price: number; time: string; detail: string };
 
@@ -31,19 +30,20 @@ const serviceCards = [
 
 const categories = ["Carpet cleaning", "Window cleaning", "Interior painting", "Gutter cleaning", "Appliance help", "Pest control", "Plumbing", "Electrical", "HVAC", "Smart home setup", "Pool care", "Garage door"];
 
-const leftHeroExamples = [
-  "My garbage disposal is making a weird noise.",
-  "I need my house cleaned Friday.",
-  "My backyard is getting out of control.",
-  "I need my TV mounted before the game this weekend.",
-  "My front walkway and patio need a clean reset.",
+const heroGuidePrompts = [
+  "Example: I need a deep clean for my 3 bedroom house tomorrow morning...",
+  "Example: My garbage disposal is making a weird noise...",
+  "Example: I need my house cleaned Friday...",
+  "Example: My backyard is getting out of control...",
+  "Example: I need help mounting a 65-inch TV in my living room...",
+  "Example: I need the front walkway and back patio cleaned before guests arrive...",
 ];
 
 export default function Home() {
   const [chatOpen, setChatOpen] = useState(false);
   const [chatRequest, setChatRequest] = useState("");
   const [embedInput, setEmbedInput] = useState("");
-  const [leftHeroExampleIndex, setLeftHeroExampleIndex] = useState(0);
+  const [heroPromptIndex, setHeroPromptIndex] = useState(0);
   const [pageInput, setPageInput] = useState("");
   const [pageQuote, setPageQuote] = useState<Quote | null>(null);
   const [pageReserved, setPageReserved] = useState(false);
@@ -51,7 +51,7 @@ export default function Home() {
   function openChat(prefill = "") { setChatRequest(prefill); setChatOpen(true); }
   useEffect(() => { const service = new URLSearchParams(window.location.search).get("service"); if (!service) return; openChat(`I need help with ${service}.`); window.history.replaceState(null, "", "/"); }, []);
   useEffect(() => {
-    const promptTimer = window.setInterval(() => setLeftHeroExampleIndex((index) => (index + 1) % leftHeroExamples.length), 4800);
+    const promptTimer = window.setInterval(() => setHeroPromptIndex((index) => (index + 1) % heroGuidePrompts.length), 4800);
     return () => window.clearInterval(promptTimer);
   }, []);
 
@@ -80,18 +80,13 @@ export default function Home() {
           <div>
             <div className="pill">★★★★★ 4.9 · 800+ happy customers</div>
             <h1>Your home,<br />handled.</h1>
-            <p>Professional home help without the phone tag. Tell us what you need and Good House can price it, find a time, and get you booked.</p>
-            <div className="hero-conversation">
-              <span>What does your home need?</span>
-              <button onClick={() => openChat()} aria-label="Ask Good House what your home needs">Ask Good House <b>→</b></button>
-              <p aria-live="off">“{leftHeroExamples[leftHeroExampleIndex]}”</p>
-            </div>
+            <p>Cleaning, repairs, lawn care, maintenance and more — one place to get anything around your home done.</p>
             <div className="actions"><button className="btn" onClick={() => openChat()}>Get price &amp; availability ✨</button><a className="btn secondary" href="/services">View services</a></div>
             <div className="trust"><span>✓ Insured professionals</span><span>✓ Easy rescheduling</span><span>✓ Secure payment</span></div>
           </div>
           <div className="embed">
             <div className="eyebrow">Option 2 · Good House Guide</div><h2>What can we help with?</h2><p>Ask a question or describe the job. When you&apos;re ready, the right booking form is one click away.</p>
-            <textarea value={embedInput} onChange={(event) => setEmbedInput(event.target.value)} className="inputbox" placeholder="Example: I need a deep clean for my 3 bedroom house tomorrow morning..." />
+            <textarea value={embedInput} onChange={(event) => setEmbedInput(event.target.value)} className="inputbox" aria-label="Describe what your home needs" placeholder={heroGuidePrompts[heroPromptIndex]} />
             <button className="btn wide" onClick={askEmbedded}>Ask Good House →</button>
             <div className="chips"><button className="chip" onClick={() => setEmbedInput("Deep clean my 3 bedroom house tomorrow morning")}>Deep cleaning</button><button className="chip" onClick={() => setEmbedInput("Mount my 65 inch TV tomorrow")}>TV mounting</button><button className="chip" onClick={() => setEmbedInput("I need a handyman Saturday morning")}>Handyman</button></div>
           </div>
