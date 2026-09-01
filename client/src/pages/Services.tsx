@@ -3,7 +3,6 @@
  * Maintain Joe's warm white editorial surface, charcoal utility typography, lime actions, and image-led popular services.
  */
 import { useState } from "react";
-import { Archive, Armchair, BedDouble, Blinds, Box, Boxes, CalendarDays, Camera, Cable, CircleGauge, ClipboardList, CloudSun, Construction, DoorClosed, DoorOpen, Droplets, Fan, Frame, Hammer, HardHat, House, Lamp, Lightbulb, Monitor, Package, Paintbrush, PaintBucket, Palette, PanelsTopLeft, Pencil, Plug, Ruler, ShowerHead, Sofa, Sparkles, Speaker, SprayCan, Sun, Thermometer, ToggleRight, Truck, Tv, type LucideIcon, Wifi, Wrench } from "lucide-react";
 import { useLocation } from "wouter";
 import "./services.css";
 
@@ -89,19 +88,16 @@ const catalog: Record<string, Service[]> = {
   ],
 };
 
-const serviceIcons: Record<string, LucideIcon> = {
-  "home cleaning": SprayCan, "a deep home cleaning": Sparkles, "move-in or move-out cleaning": House, "recurring home cleaning": CalendarDays,
-  "TV mounting": Tv, "soundbar installation": Speaker, "home theater setup": Monitor, "TV cable management": Cable,
-  "furniture assembly": Wrench, "bed assembly": BedDouble, "office furniture assembly": Boxes, "outdoor furniture assembly": Armchair,
-  "small home repairs": Hammer, "hanging pictures and shelves": Frame, "door and hardware repairs": DoorOpen, "minor drywall and caulking repairs": PaintBucket,
-  "faucet repair": Droplets, "plumbing fixture installation": ShowerHead, "drain troubleshooting": CircleGauge, "toilet repair": Wrench,
-  "light fixture installation": Lamp, "ceiling fan installation": Fan, "outlet or switch installation": ToggleRight, "appliance or device connection": Plug,
-  "interior painting": Paintbrush, "accent wall painting": Palette, "trim and door painting": DoorClosed, "paint touch-ups": Pencil,
-  "moving help for loading and unloading": Package, "in-home furniture moving": Sofa, "move-in setup help": Box, "move-out help": Truck,
-  "doorbell or camera setup": Camera, "Wi-Fi router setup": Wifi, "smart thermostat setup": Thermometer, "smart home device setup": Lightbulb,
-  "window blind installation": Blinds, "curtain and drapery installation": PanelsTopLeft, "window shade installation": Sun, "curtain rod installation": Ruler,
-  "drywall patching": Construction, "shelving installation": Archive, "home weatherproofing": CloudSun, "a home improvement project": ClipboardList,
+const categoryMosaics: Record<string, string> = {
+  Cleaning: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/FZVuzcnguMKqLqOB.jpg", "TV & Electronics": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/dXrOiGMVkcakKOXj.jpg",
+  Assembly: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/cvYPmYvkkICtAirs.jpg", "General Handyman": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/LIzjOiAPUsvHiKUL.jpg",
+  Plumbing: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/idfhQFnmCFQwNUvi.jpg", Electrical: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/hjiQoEkXJDwsWnSf.jpg",
+  Painting: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/GxzEnfQzQzPNkJzD.jpg", Moving: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/QiGsJnhaxKLnTgku.jpg",
+  "Smart Home": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/HCOzNjOSzZVnSyAG.jpg", "Window Treatments": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/PPGwhHVfcEHjjKln.jpg",
+  "Home Improvement Projects": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/bBTqxSdgDHPNeqwO.jpg",
 };
+
+const mosaicCropPositions = [["0%", "0%"], ["-50%", "0%"], ["0%", "-50%"], ["-50%", "-50%"]] as const;
 
 export default function Services() {
   const [, setLocation] = useLocation();
@@ -135,7 +131,7 @@ export default function Services() {
                 {activeServices.map((service, index) => service.image ? (
                   <article className={`directory-photo-card ${index === 0 ? "photo-feature" : ""}`} key={service.title}><img src={service.image} alt="" /><div className="photo-card-shade" /><div className="photo-card-content"><div className="eyebrow">{service.accent}</div><h4>{service.title}</h4><p>{service.description}</p><button className="photo-link" onClick={() => startRequest(service.request)}>Explore service <span>↗</span></button></div></article>
                 ) : (
-                  (() => { const ServiceIcon = serviceIcons[service.request] ?? Sparkles; return <button className="directory-service-card" key={service.title} onClick={() => startRequest(service.request)}><span className="service-index">{String(index + 1).padStart(2, "0")}</span><span className={`service-thumbnail tone-${index + 1}`}><ServiceIcon aria-hidden="true" strokeWidth={1.65} /></span><h4>{service.title}</h4><p>{service.description}</p><span className="card-ask">Start a request <b>→</b></span></button>; })()
+                  (() => { const [x, y] = mosaicCropPositions[index % mosaicCropPositions.length]; return <button className="directory-service-card" key={service.title} onClick={() => startRequest(service.request)}><span className="service-index">{String(index + 1).padStart(2, "0")}</span><span className="service-thumbnail"><img src={categoryMosaics[activeCategory]} alt="" style={{ transform: `translate(${x}, ${y})` }} /></span><h4>{service.title}</h4><p>{service.description}</p><span className="card-ask">Start a request <b>→</b></span></button>; })()
                 ))}
               </div>
             </div>
