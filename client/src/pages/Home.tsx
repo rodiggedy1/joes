@@ -1,9 +1,11 @@
 /**
- * Design reference: Good Joe keeps the original warm paper canvas, charcoal utility typography, lime actions, and AI booking flow.
- * Preserve the warm paper canvas, charcoal utility typography, lime actions, and AI booking flow.
+ * Design reference: the supplied Good Joe hero is the ground-truth layout—elevated navigation, generous cream field, large left headline, room scene, and tall right guide.
+ * Preserve the warm paper canvas, charcoal typography, lime-and-forest actions, and AI booking flow. Do not add unsupported ratings, reviews, or customer identities.
  */
 import { useEffect, useState } from "react";
+import { ArrowRight, ArrowUp, CalendarDays, ChevronDown, Grid2X2, Leaf, LockKeyhole, ShieldCheck, Sparkles, Tv, Wrench } from "lucide-react";
 import BookingAssistant from "./BookingAssistant";
+import "./ReferenceHero.css";
 import "./ServiceMoments.css";
 
 type Quote = { service: string; price: number; time: string; detail: string };
@@ -45,6 +47,10 @@ const heroGuidePrompts = [
   "My Airbnb needs to be turned over tomorrow.",
 ];
 
+function JoeMark({ className = "" }: { className?: string }) {
+  return <img className={className} src="/manus-storage/good-joe-portrait-logo_09a44db0.png" alt="" />;
+}
+
 export default function Home() {
   const [chatOpen, setChatOpen] = useState(false);
   const [chatRequest, setChatRequest] = useState("");
@@ -77,24 +83,27 @@ export default function Home() {
   return (
     <>
       <div className="site">
-        <header>
-          <div className="brand"><div className="logo"><svg className="brand-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3l8.5 7.5v10H3.5z" /><path className="brand-door" d="M9.25 20.5v-6h5.5v6z" /></svg></div><div><strong>Good Joe</strong><small>The good kind of help for home</small></div></div>
-          <div className="nav"><a href="/services">Services</a><span>Reviews</span><span>About</span></div>
+        <header className="reference-header">
+          <div className="brand reference-brand"><div className="logo"><JoeMark className="joe-mark" /></div><div><strong>Good Joe</strong><small>The good kind of help for home</small></div></div>
+          <div className="nav reference-nav"><a href="/services">Services <ChevronDown aria-hidden="true" /></a><span>Reviews</span><a href="#how">How it works</a><span>About</span></div>
           <button className="btn" onClick={() => openChat()}>Book now</button>
         </header>
-        <section className="hero">
-          <div>
-            <div className="pill">★★★★★ 4.9 · 800+ happy customers</div>
-            <h1>Your home,<br />handled.</h1>
+        <section className="hero reference-hero">
+          <div className="reference-hero-scene" aria-hidden="true" />
+          <div className="reference-hero-copy">
+            <div className="reference-kicker"><Sparkles aria-hidden="true" /> One clear request. One useful next step.</div>
+            <h1>Your home,<br /><span>handled.</span></h1>
             <p>Cleaning, repairs, lawn care, maintenance and more — one place to get anything around your home done.</p>
-            <div className="actions"><button className="btn" onClick={() => openChat()}>Get price &amp; availability ✨</button><a className="btn secondary" href="/services">View services</a></div>
-            <div className="trust"><span>✓ Insured professionals</span><span>✓ Easy rescheduling</span><span>✓ Secure payment</span></div>
+            <div className="actions reference-actions"><button className="btn" onClick={() => openChat()}>Get price &amp; availability <ArrowRight aria-hidden="true" /></button><a className="btn secondary" href="/services">View services <Grid2X2 aria-hidden="true" /></a></div>
+            <div className="trust reference-trust"><span><ShieldCheck aria-hidden="true" />Insured<br />professionals</span><span><CalendarDays aria-hidden="true" />Easy<br />rescheduling</span><span><LockKeyhole aria-hidden="true" />Secure<br />payment</span></div>
+            <div className="reference-people" aria-hidden="true"><img src="/manus-storage/good-joe-people-cluster_7d2cd121.png" alt="" /></div>
           </div>
-          <div className="embed">
-            <div className="eyebrow">Good Joe Guide</div><h2>What can we help with?</h2><p>Ask a question or describe the job. When you&apos;re ready, the right booking form is one click away.</p>
-            <textarea value={embedInput} onChange={(event) => setEmbedInput(event.target.value)} className="inputbox" aria-label="Describe what your home needs" placeholder={heroGuidePrompts[heroPromptIndex]} />
-            <button className="btn wide" onClick={askEmbedded}>Ask Joe →</button>
-            <div className="chips"><button className="chip" onClick={() => setEmbedInput("Deep clean my 3 bedroom house tomorrow morning")}>Deep cleaning</button><button className="chip" onClick={() => setEmbedInput("Mount my 65 inch TV tomorrow")}>TV mounting</button><button className="chip" onClick={() => setEmbedInput("I need a handyman Saturday morning")}>Handyman</button></div>
+          <div className="embed reference-guide">
+            <div className="reference-guide-main"><div className="eyebrow">Good Joe Guide</div><h2>What can we help with?</h2><p>Ask a question or describe the job. When you&apos;re ready, the right booking form is one click away.</p>
+            <div className="reference-input-wrap"><textarea value={embedInput} onChange={(event) => setEmbedInput(event.target.value)} className="inputbox" aria-label="Describe what your home needs" placeholder={heroGuidePrompts[heroPromptIndex]} /><button onClick={askEmbedded} aria-label="Send request to Joe"><ArrowUp aria-hidden="true" /></button></div>
+            <button className="btn reference-guide-action" onClick={askEmbedded}>Ask Joe <Sparkles aria-hidden="true" /></button>
+            <div className="reference-popular"><strong>Popular requests</strong><div className="chips reference-chips"><button className="chip" onClick={() => setEmbedInput("Deep clean my 3 bedroom house tomorrow morning")}><Sparkles aria-hidden="true" />Deep cleaning</button><button className="chip" onClick={() => setEmbedInput("Mount my 65 inch TV tomorrow")}><Tv aria-hidden="true" />TV mounting</button><button className="chip" onClick={() => setEmbedInput("I need a handyman Saturday morning")}><Wrench aria-hidden="true" />Handyman</button><button className="chip" onClick={() => setEmbedInput("My backyard is getting out of control")}><Leaf aria-hidden="true" />Lawn care</button><button className="chip" onClick={() => setEmbedInput("I need move-in cleaning tomorrow")}><Sparkles aria-hidden="true" />Move in / out cleaning</button></div></div></div>
+            <div className="reference-guide-footer"><div><div className="guide-avatar"><JoeMark className="joe-mark" /></div><span>Joe finds the right pros, books it, and keeps everything on track.</span></div><a href="#how">How it works <ArrowRight aria-hidden="true" /></a></div>
           </div>
         </section>
         <section className="services-intro" id="services"><div className="eyebrow">Popular services</div><h2>One place for the jobs around your home.</h2><p>From recurring upkeep to the random thing that needs fixing today. Tell Good Joe what you need and we&apos;ll guide you from request to booked.</p></section>
