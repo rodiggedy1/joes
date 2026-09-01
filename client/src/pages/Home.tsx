@@ -2,12 +2,10 @@
  * Design reference: Good House Co. keeps the original warm paper canvas, charcoal utility typography, lime actions, and AI booking flow.
  * Preserve the warm paper canvas, charcoal utility typography, lime actions, and AI booking flow.
  */
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import BookingAssistant from "./BookingAssistant";
 
 type Quote = { service: string; price: number; time: string; detail: string };
-type ChatMessage = { kind: "intro"; text: string } | { kind: "user"; text: string; id: number } | { kind: "quote"; quote: Quote; id: number };
-
-const initialMessage: ChatMessage = { kind: "intro", text: "Hey! 👋 Tell me what you need done. I can check pricing and availability right here." };
 
 function classify(text: string): Quote {
   const lower = text.toLowerCase();
@@ -33,48 +31,19 @@ const categories = ["Carpet cleaning", "Window cleaning", "Interior painting", "
 
 export default function Home() {
   const [chatOpen, setChatOpen] = useState(false);
-  const [chatInput, setChatInput] = useState("");
+  const [chatRequest, setChatRequest] = useState("");
   const [embedInput, setEmbedInput] = useState("");
   const [pageInput, setPageInput] = useState("");
   const [pageQuote, setPageQuote] = useState<Quote | null>(null);
   const [pageReserved, setPageReserved] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
-  const [bookedQuotes, setBookedQuotes] = useState<number[]>([]);
-  const chatInputRef = useRef<HTMLInputElement>(null);
-  const messagesRef = useRef<HTMLDivElement>(null);
-  const messageIdRef = useRef(1);
-
-  useEffect(() => { if (chatOpen) window.setTimeout(() => chatInputRef.current?.focus(), 0); }, [chatOpen]);
-  useEffect(() => { if (messagesRef.current) messagesRef.current.scrollTop = messagesRef.current.scrollHeight; }, [messages]);
-  useEffect(() => {
-    const requestedService = new URLSearchParams(window.location.search).get("service");
-    if (!requestedService) return;
-    setChatOpen(true);
-    setChatInput(`I need help with ${requestedService}.`);
-    window.history.replaceState(null, "", "/");
-  }, []);
-
-  function nextId() { const id = messageIdRef.current; messageIdRef.current += 1; return id; }
-  function openChat(prefill = "") { setChatOpen(true); if (prefill) setChatInput(prefill); }
-  function appendQuote(text: string) { setMessages((current) => [...current, { kind: "quote", quote: classify(text), id: nextId() }]); }
-  function addUser(text: string) { setMessages((current) => [...current, { kind: "user", text, id: nextId() }]); }
-
-  function submitChat(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const text = chatInput.trim();
-    if (!text) return;
-    addUser(text);
-    setChatInput("");
-    window.setTimeout(() => appendQuote(text), 250);
-  }
+  function openChat(prefill = "") { setChatRequest(prefill); setChatOpen(true); }
+  useEffect(() => { const service = new URLSearchParams(window.location.search).get("service"); if (!service) return; openChat(`I need help with ${service}.`); window.history.replaceState(null, "", "/"); }, []);
 
   function askEmbedded() {
     const text = embedInput.trim();
     if (!text) return;
-    openChat();
-    addUser(text);
-    appendQuote(text);
+    openChat(text);
   }
 
   function askBookingPage() {
@@ -101,7 +70,7 @@ export default function Home() {
             <div className="trust"><span>✓ Insured professionals</span><span>✓ Easy rescheduling</span><span>✓ Secure payment</span></div>
           </div>
           <div className="embed">
-            <div className="eyebrow">Option 2 · Embedded AI</div><h2>What can we help with?</h2><p>Skip the forms. Describe what you need in your own words.</p>
+            <div className="eyebrow">Option 2 · Good House Guide</div><h2>What can we help with?</h2><p>Ask a question or describe the job. When you&apos;re ready, the right booking form is one click away.</p>
             <textarea value={embedInput} onChange={(event) => setEmbedInput(event.target.value)} className="inputbox" placeholder="Example: I need a deep clean for my 3 bedroom house tomorrow morning..." />
             <button className="btn wide" onClick={askEmbedded}>Ask Good House →</button>
             <div className="chips"><button className="chip" onClick={() => setEmbedInput("Deep clean my 3 bedroom house tomorrow morning")}>Deep cleaning</button><button className="chip" onClick={() => setEmbedInput("Mount my 65 inch TV tomorrow")}>TV mounting</button><button className="chip" onClick={() => setEmbedInput("I need a handyman Saturday morning")}>Handyman</button></div>
@@ -122,16 +91,7 @@ export default function Home() {
       </div>
       <div className="note">Good House Co. prototype · pricing, availability and payment details are simulated.</div>
       <button className="float" onClick={() => openChat()}><span>✨</span> Book with AI</button>
-      <div className={`chat${chatOpen ? " open" : ""}`}>
-        <div className="chat-head"><div className="agent"><div className="spark">✨</div><div><strong>Good House Guide</strong><div className="online"><b>●</b> Ready to book</div></div></div><button className="x" aria-label="Close chat" onClick={() => setChatOpen(false)}>×</button></div>
-        <div className="messages" ref={messagesRef}>{messages.map((message) => {
-          if (message.kind === "intro") return <div className="bubble ai" key="intro">{message.text}</div>;
-          if (message.kind === "user") return <div className="bubble user" key={message.id}>{message.text}</div>;
-          const held = bookedQuotes.includes(message.id);
-          return <div key={message.id}><div className="bubble ai">I found an opening that matches what you asked for.</div><div className="quote"><div className="eyebrow">Available</div><div className="quote-top"><div><strong>{message.quote.service}</strong><div className="quote-detail">{message.quote.detail}</div></div><div className="price">${message.quote.price}</div></div><div className="slot">📅 {message.quote.time}</div><button className="btn wide" disabled={held} onClick={() => setBookedQuotes((current) => [...current, message.id])}>{held ? "✓ Time held — next: details" : `Continue — $${message.quote.price}`}</button></div></div>;
-        })}</div>
-        <form className="chat-form" onSubmit={submitChat}><input ref={chatInputRef} value={chatInput} onChange={(event) => setChatInput(event.target.value)} className="chat-input" placeholder="Tell me what you need..." /><button className="send" aria-label="Send request">↑</button></form>
-      </div>
+      <BookingAssistant open={chatOpen} requestText={chatRequest} onClose={() => setChatOpen(false)} />
       <div className={`modal${modalOpen ? " open" : ""}`} onClick={(event) => { if (event.target === event.currentTarget) setModalOpen(false); }}>
         <div className="booking-page"><div className="book-top"><div className="brand"><div className="logo"><svg className="brand-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3l8.5 7.5v10H3.5z" /><path className="brand-door" d="M9.25 20.5v-6h5.5v6z" /></svg></div><strong>Good House Co.</strong></div><button className="btn secondary" onClick={() => setModalOpen(false)}>Back to website</button></div><div className="center"><div className="spark">✨</div><h2>What do you need done?</h2><p>Tell me in your own words. I&apos;ll take care of the rest.</p><textarea value={pageInput} onChange={(event) => setPageInput(event.target.value)} className="inputbox" placeholder="I need..." /><button className="btn wide" onClick={askBookingPage}>Get price &amp; availability →</button>{pageQuote && <div className="result show"><div className="quote"><div className="eyebrow">Best available option</div><div className="quote-top"><div><strong className="page-service">{pageQuote.service}</strong><div className="page-detail">{pageQuote.time}<br />{pageQuote.detail}</div></div><div className="price">${pageQuote.price}</div></div><button className="btn wide" disabled={pageReserved} onClick={() => setPageReserved(true)}>{pageReserved ? "✓ Reserved — next: payment" : "Book this time →"}</button></div></div>}<p className="secure-note">🔒 Secure &nbsp; · &nbsp; ✓ Insured &nbsp; · &nbsp; ★ 4.9 rated</p></div></div>
       </div>
