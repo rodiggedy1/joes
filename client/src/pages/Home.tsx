@@ -23,7 +23,7 @@ const serviceCards = [
   ["📺", "TV mounting", "TVs, soundbars, shelves and clean cable-management setups.", "TV mounting", "/services/tv-mounting"],
   ["🪑", "Furniture assembly", "Beds, desks, dressers, shelving and outdoor furniture.", "furniture assembly", "/services/furniture-assembly"],
   ["🌿", "Lawn & yard care", "Mowing, trimming, cleanup and routine outdoor maintenance.", "lawn and yard care", "/services/lawn-care"],
-  ["🚚", "Moving help", "Loading, unloading, heavy lifting and in-home furniture moves.", "moving help"],
+  ["🚚", "Moving help", "Loading, unloading, heavy lifting and in-home furniture moves.", "moving help", "/services/moving-help"],
   ["🗑️", "Junk removal", "Furniture, appliances, garage cleanouts and unwanted items.", "junk removal"],
   ["💦", "Pressure washing", "Driveways, patios, walkways, siding and outdoor surfaces.", "pressure washing"],
 ];
