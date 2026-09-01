@@ -31,12 +31,12 @@ const serviceCards = [
 const categories = ["Carpet cleaning", "Window cleaning", "Interior painting", "Gutter cleaning", "Appliance help", "Pest control", "Plumbing", "Electrical", "HVAC", "Smart home setup", "Pool care", "Garage door"];
 
 const heroGuidePrompts = [
-  "Example: I need a deep clean for my 3 bedroom house tomorrow morning...",
-  "Example: My garbage disposal is making a weird noise...",
-  "Example: I need my house cleaned Friday...",
-  "Example: My backyard is getting out of control...",
-  "Example: I need help mounting a 65-inch TV in my living room...",
-  "Example: I need the front walkway and back patio cleaned before guests arrive...",
+  "I need a deep clean for my 3 bedroom house tomorrow morning...",
+  "My garbage disposal is making a weird noise...",
+  "I need my house cleaned Friday...",
+  "My backyard is getting out of control...",
+  "I need help mounting a 65-inch TV in my living room...",
+  "I need the front walkway and back patio cleaned before guests arrive...",
 ];
 
 export default function Home() {
@@ -51,7 +51,7 @@ export default function Home() {
   function openChat(prefill = "") { setChatRequest(prefill); setChatOpen(true); }
   useEffect(() => { const service = new URLSearchParams(window.location.search).get("service"); if (!service) return; openChat(`I need help with ${service}.`); window.history.replaceState(null, "", "/"); }, []);
   useEffect(() => {
-    const promptTimer = window.setInterval(() => setHeroPromptIndex((index) => (index + 1) % heroGuidePrompts.length), 4800);
+    const promptTimer = window.setInterval(() => setHeroPromptIndex((index) => (index + 1) % heroGuidePrompts.length), 2400);
     return () => window.clearInterval(promptTimer);
   }, []);
 
