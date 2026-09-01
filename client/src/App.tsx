@@ -14,6 +14,7 @@ import LawnCare from "./pages/LawnCare";
 import MovingHelp from "./pages/MovingHelp";
 import JunkRemoval from "./pages/JunkRemoval";
 import PressureWashing from "./pages/PressureWashing";
+import GoodJoeBranding from "./components/GoodJoeBranding";
 
 
 function Router() {
@@ -50,6 +51,7 @@ function App() {
       >
         <TooltipProvider>
           <Toaster />
+          <GoodJoeBranding />
           <Router />
         </TooltipProvider>
       </ThemeProvider>
