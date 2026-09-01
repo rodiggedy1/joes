@@ -9,6 +9,7 @@ import Services from "./pages/Services";
 import Handyman from "./pages/Handyman";
 import Cleaning from "./pages/Cleaning";
 import TVMounting from "./pages/TVMounting";
+import FurnitureAssembly from "./pages/FurnitureAssembly";
 
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Route path={"/services/handyman"} component={Handyman} />
       <Route path={"/services/cleaning"} component={Cleaning} />
       <Route path={"/services/tv-mounting"} component={TVMounting} />
+      <Route path={"/services/furniture-assembly"} component={FurnitureAssembly} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

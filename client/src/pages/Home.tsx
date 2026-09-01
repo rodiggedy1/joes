@@ -21,7 +21,7 @@ const serviceCards = [
   ["🧹", "House cleaning", "Standard, deep, move-in, move-out and recurring cleaning.", "home cleaning", "/services/cleaning"],
   ["🔨", "Handyman", "Small repairs, punch lists, hanging, patching and installations.", "a handyman repair", "/services/handyman"],
   ["📺", "TV mounting", "TVs, soundbars, shelves and clean cable-management setups.", "TV mounting", "/services/tv-mounting"],
-  ["🪑", "Furniture assembly", "Beds, desks, dressers, shelving and outdoor furniture.", "furniture assembly"],
+  ["🪑", "Furniture assembly", "Beds, desks, dressers, shelving and outdoor furniture.", "furniture assembly", "/services/furniture-assembly"],
   ["🌿", "Lawn & yard care", "Mowing, trimming, cleanup and routine outdoor maintenance.", "lawn and yard care"],
   ["🚚", "Moving help", "Loading, unloading, heavy lifting and in-home furniture moves.", "moving help"],
   ["🗑️", "Junk removal", "Furniture, appliances, garage cleanouts and unwanted items.", "junk removal"],
