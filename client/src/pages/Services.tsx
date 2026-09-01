@@ -88,6 +88,20 @@ const catalog: Record<string, Service[]> = {
   ],
 };
 
+const categoryArtwork: Record<string, string> = {
+  Cleaning: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/GIaGFBZcskrjlLsK.jpg",
+  "TV & Electronics": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/baSoauykNRogxOrL.jpg",
+  Assembly: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/ApnFdzxltPesPxZG.jpg",
+  "General Handyman": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/sJkZbYPnJljBXNVv.jpg",
+  Plumbing: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/sJkZbYPnJljBXNVv.jpg",
+  Electrical: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/baSoauykNRogxOrL.jpg",
+  Painting: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/TrUJosFNIoPbWYDk.jpg",
+  Moving: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/ApnFdzxltPesPxZG.jpg",
+  "Smart Home": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/baSoauykNRogxOrL.jpg",
+  "Window Treatments": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/GIaGFBZcskrjlLsK.jpg",
+  "Home Improvement Projects": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/sJkZbYPnJljBXNVv.jpg",
+};
+
 export default function Services() {
   const [, setLocation] = useLocation();
   const [activeCategory, setActiveCategory] = useState("Popular");
@@ -120,7 +134,7 @@ export default function Services() {
                 {activeServices.map((service, index) => service.image ? (
                   <article className={`directory-photo-card ${index === 0 ? "photo-feature" : ""}`} key={service.title}><img src={service.image} alt="" /><div className="photo-card-shade" /><div className="photo-card-content"><div className="eyebrow">{service.accent}</div><h4>{service.title}</h4><p>{service.description}</p><button className="photo-link" onClick={() => startRequest(service.request)}>Explore service <span>↗</span></button></div></article>
                 ) : (
-                  <button className="directory-service-card" key={service.title} onClick={() => startRequest(service.request)}><span className="service-index">{String(index + 1).padStart(2, "0")}</span><h4>{service.title}</h4><p>{service.description}</p><span className="card-ask">Start a request <b>→</b></span></button>
+                  <button className="directory-service-card" key={service.title} onClick={() => startRequest(service.request)}><span className="service-index">{String(index + 1).padStart(2, "0")}</span><span className="service-thumbnail"><img src={categoryArtwork[activeCategory]} alt="" /></span><h4>{service.title}</h4><p>{service.description}</p><span className="card-ask">Start a request <b>→</b></span></button>
                 ))}
               </div>
             </div>
