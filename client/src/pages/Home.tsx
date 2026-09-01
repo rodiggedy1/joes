@@ -24,7 +24,7 @@ const serviceCards = [
   ["🪑", "Furniture assembly", "Beds, desks, dressers, shelving and outdoor furniture.", "furniture assembly", "/services/furniture-assembly"],
   ["🌿", "Lawn & yard care", "Mowing, trimming, cleanup and routine outdoor maintenance.", "lawn and yard care", "/services/lawn-care"],
   ["🚚", "Moving help", "Loading, unloading, heavy lifting and in-home furniture moves.", "moving help", "/services/moving-help"],
-  ["🗑️", "Junk removal", "Furniture, appliances, garage cleanouts and unwanted items.", "junk removal"],
+  ["🗑️", "Junk removal", "Furniture, appliances, garage cleanouts and unwanted items.", "junk removal", "/services/junk-removal"],
   ["💦", "Pressure washing", "Driveways, patios, walkways, siding and outdoor surfaces.", "pressure washing"],
 ];
 

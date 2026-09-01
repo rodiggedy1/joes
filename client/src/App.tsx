@@ -12,6 +12,7 @@ import TVMounting from "./pages/TVMounting";
 import FurnitureAssembly from "./pages/FurnitureAssembly";
 import LawnCare from "./pages/LawnCare";
 import MovingHelp from "./pages/MovingHelp";
+import JunkRemoval from "./pages/JunkRemoval";
 
 
 function Router() {
@@ -25,6 +26,7 @@ function Router() {
       <Route path={"/services/furniture-assembly"} component={FurnitureAssembly} />
       <Route path={"/services/lawn-care"} component={LawnCare} />
       <Route path={"/services/moving-help"} component={MovingHelp} />
+      <Route path={"/services/junk-removal"} component={JunkRemoval} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
