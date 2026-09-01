@@ -110,7 +110,7 @@ export default function Services() {
   return (
     <div className="site services-page">
       <header className="services-header">
-        <a href="/" className="brand brand-link" aria-label="Return to Good House Co. home page"><div className="logo"><img className="brand-mark" src="/manus-storage/good-house-co-mark_c955cb98.png" alt="" /></div><div><strong>Good House Co.</strong><small>The good kind of help for home</small></div></a>
+        <a href="/" className="brand brand-link" aria-label="Return to Good House Co. home page"><div className="logo"><span className="brand-symbol" aria-hidden="true" /></div><div><strong>Good House Co.</strong><small>The good kind of help for home</small></div></a>
         <nav className="nav" aria-label="Main navigation"><a className="nav-active" href="/services">Services</a><a href="/#reviews">Reviews</a><a href="/#about">About</a></nav>
         <button className="btn" onClick={() => startRequest("a home service")}>Book now</button>
       </header>
@@ -141,7 +141,7 @@ export default function Services() {
         <section className="services-cta"><div><div className="eyebrow">Not sure what to call the job?</div><h2>Describe it your way.</h2><p>“The bathroom faucet won’t stop dripping” is a perfectly good place to start.</p></div><button className="btn" onClick={() => startRequest("I need help with a job around my home")}>Start a request →</button></section>
       </main>
 
-      <footer><a href="/" className="brand brand-link"><div className="logo"><img className="brand-mark" src="/manus-storage/good-house-co-mark_c955cb98.png" alt="" /></div><strong>Good House Co.</strong></a><span>The good kind of help for home</span><span>Tell us what needs doing</span></footer>
+      <footer><a href="/" className="brand brand-link"><div className="logo"><span className="brand-symbol" aria-hidden="true" /></div><strong>Good House Co.</strong></a><span>The good kind of help for home</span><span>Tell us what needs doing</span></footer>
     </div>
   );
 }
