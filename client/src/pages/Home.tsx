@@ -47,6 +47,13 @@ export default function Home() {
 
   useEffect(() => { if (chatOpen) window.setTimeout(() => chatInputRef.current?.focus(), 0); }, [chatOpen]);
   useEffect(() => { if (messagesRef.current) messagesRef.current.scrollTop = messagesRef.current.scrollHeight; }, [messages]);
+  useEffect(() => {
+    const requestedService = new URLSearchParams(window.location.search).get("service");
+    if (!requestedService) return;
+    setChatOpen(true);
+    setChatInput(`I need help with ${requestedService}.`);
+    window.history.replaceState(null, "", "/");
+  }, []);
 
   function nextId() { const id = messageIdRef.current; messageIdRef.current += 1; return id; }
   function openChat(prefill = "") { setChatOpen(true); if (prefill) setChatInput(prefill); }
@@ -82,7 +89,7 @@ export default function Home() {
       <div className="site">
         <header>
           <div className="brand"><div className="logo">J</div><div><strong>Joe&apos;s Home Services</strong><small>Cleaning · Handyman · Home Care</small></div></div>
-          <div className="nav"><span>Services</span><span>Reviews</span><span>About</span></div>
+          <div className="nav"><a href="/services">Services</a><span>Reviews</span><span>About</span></div>
           <button className="btn" onClick={() => openChat()}>Book now</button>
         </header>
         <section className="hero">
@@ -90,7 +97,7 @@ export default function Home() {
             <div className="pill">★★★★★ 4.9 · 800+ happy customers</div>
             <h1>Your home,<br />handled.</h1>
             <p>Professional home services without the phone tag. Tell us what you need and our AI assistant can price it, find a time, and get you booked.</p>
-            <div className="actions"><button className="btn" onClick={() => openChat()}>Get price &amp; availability ✨</button><button className="btn secondary" onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}>View services</button></div>
+            <div className="actions"><button className="btn" onClick={() => openChat()}>Get price &amp; availability ✨</button><a className="btn secondary" href="/services">View services</a></div>
             <div className="trust"><span>✓ Insured professionals</span><span>✓ Easy rescheduling</span><span>✓ Secure payment</span></div>
           </div>
           <div className="embed">
