@@ -1,0 +1,4 @@
+/* Good House Co. Handyman correction: preserve clear hero copy by anchoring the Guide to the image field. */
+.handyman-guide-card{right:42px;bottom:34px;left:auto}
+@media(max-width:960px){.handyman-hero-copy{padding-bottom:44px}.handyman-guide-card{top:auto;right:42px;bottom:26px;left:auto}}
+@media(max-width:800px){.handyman-hero-copy{padding:45px 22px}.handyman-hero-visual{min-height:405px}.handyman-guide-card{top:auto;right:22px;bottom:18px;left:22px;width:auto}}

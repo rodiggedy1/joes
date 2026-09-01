@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import "./services.css";
 
-type Service = { title: string; description: string; request: string; image?: string; accent?: string };
+type Service = { title: string; description: string; request: string; image?: string; accent?: string; detailPath?: string };
 
 const categoryOrder = [
   "Popular", "Cleaning", "TV & Electronics", "Assembly", "General Handyman", "Plumbing", "Electrical", "Painting", "Moving", "Smart Home", "Window Treatments", "Home Improvement Projects",
@@ -17,7 +17,7 @@ const catalog: Record<string, Service[]> = {
     { title: "Home cleaning", description: "Regular resets, deeper cleanups, and move-day refreshes shaped around your home.", request: "home cleaning", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/GIaGFBZcskrjlLsK.jpg", accent: "Cleaning" },
     { title: "TV & wall mounting", description: "Televisions, soundbars, shelves, and cleaner cable setups for the room you use most.", request: "TV mounting", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/baSoauykNRogxOrL.jpg", accent: "TV & electronics" },
     { title: "Furniture assembly", description: "Beds, desks, dressers, shelving, and the just-delivered pieces that need a steady hand.", request: "furniture assembly", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/ApnFdzxltPesPxZG.jpg", accent: "Assembly" },
-    { title: "Handyman & repairs", description: "Punch lists, hardware, minor repairs, trim work, and jobs that have been waiting.", request: "a handyman repair", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/sJkZbYPnJljBXNVv.jpg", accent: "General handyman" },
+    { title: "Handyman & repairs", description: "Punch lists, hardware, minor repairs, trim work, and jobs that have been waiting.", request: "a handyman repair", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/sJkZbYPnJljBXNVv.jpg", accent: "General handyman", detailPath: "/services/handyman" },
     { title: "Interior painting", description: "A fresh wall, a focused accent, or the finishing touch that changes how a room feels.", request: "interior painting", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663254023424/TrUJosFNIoPbWYDk.jpg", accent: "Painting" },
   ],
   Cleaning: [
@@ -129,7 +129,7 @@ export default function Services() {
               <div className="results-head"><div><div className="eyebrow">{activeCategory}</div><h3>{activeCategory === "Popular" ? "A few places to begin." : `Explore ${activeCategory.toLowerCase()}.`}</h3></div><p>{activeCategory === "Popular" ? "The most frequently requested jobs, shown with a little more detail." : "Choose a service to begin your request, then add the details that make it yours."}</p></div>
               <div className={`directory-card-grid ${activeCategory === "Popular" ? "is-popular" : ""}`}>
                 {activeServices.map((service, index) => service.image ? (
-                  <article className={`directory-photo-card ${index === 0 ? "photo-feature" : ""}`} key={service.title}><img src={service.image} alt="" /><div className="photo-card-shade" /><div className="photo-card-content"><div className="eyebrow">{service.accent}</div><h4>{service.title}</h4><p>{service.description}</p><button className="photo-link" onClick={() => startRequest(service.request)}>Explore service <span>↗</span></button></div></article>
+                  <article className={`directory-photo-card ${index === 0 ? "photo-feature" : ""}`} key={service.title}><img src={service.image} alt="" /><div className="photo-card-shade" /><div className="photo-card-content"><div className="eyebrow">{service.accent}</div><h4>{service.title}</h4><p>{service.description}</p>{service.detailPath ? <a className="photo-link" href={service.detailPath}>Explore service <span>↗</span></a> : <button className="photo-link" onClick={() => startRequest(service.request)}>Explore service <span>↗</span></button>}</div></article>
                 ) : (
                   (() => { const [x, y] = mosaicCropPositions[index % mosaicCropPositions.length]; return <button className="directory-service-card" key={service.title} onClick={() => startRequest(service.request)}><span className="service-index">{String(index + 1).padStart(2, "0")}</span><span className="service-thumbnail"><img src={categoryMosaics[activeCategory]} alt="" style={{ transform: `translate(${x}, ${y})` }} /></span><h4>{service.title}</h4><p>{service.description}</p><span className="card-ask">Start a request <b>→</b></span></button>; })()
                 ))}
