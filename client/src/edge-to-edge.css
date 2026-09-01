@@ -1,0 +1,28 @@
+/* Design reference adjustment: remove only the exterior gray presentation frame; preserve the white Joe's Home Services site surface within. */
+html, body, #root {
+  min-height: 100%;
+}
+
+body {
+  background: #fff;
+}
+
+.site {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.note {
+  margin-bottom: 32px;
+}
+
+@media (max-width: 800px) {
+  .site {
+    margin: 0;
+    border-radius: 0;
+  }
+}
