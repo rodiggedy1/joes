@@ -91,9 +91,9 @@ export default function Home() {
             <div className="trust"><span>✓ Insured professionals</span><span>✓ Easy rescheduling</span><span>✓ Secure payment</span></div>
           </div>
           <div className="embed">
-            <div className="eyebrow">Option 2 · Good Joe Guide</div><h2>What can we help with?</h2><p>Ask a question or describe the job. When you&apos;re ready, the right booking form is one click away.</p>
+            <div className="eyebrow">Good Joe Guide</div><h2>What can we help with?</h2><p>Ask a question or describe the job. When you&apos;re ready, the right booking form is one click away.</p>
             <textarea value={embedInput} onChange={(event) => setEmbedInput(event.target.value)} className="inputbox" aria-label="Describe what your home needs" placeholder={heroGuidePrompts[heroPromptIndex]} />
-            <button className="btn wide" onClick={askEmbedded}>Ask Good Joe →</button>
+            <button className="btn wide" onClick={askEmbedded}>Ask Joe →</button>
             <div className="chips"><button className="chip" onClick={() => setEmbedInput("Deep clean my 3 bedroom house tomorrow morning")}>Deep cleaning</button><button className="chip" onClick={() => setEmbedInput("Mount my 65 inch TV tomorrow")}>TV mounting</button><button className="chip" onClick={() => setEmbedInput("I need a handyman Saturday morning")}>Handyman</button></div>
           </div>
         </section>
