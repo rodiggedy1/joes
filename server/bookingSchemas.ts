@@ -33,5 +33,5 @@ export const operationsBookingUpdateSchema = z.object({
 
 export const staffLoginSchema = z.object({
   email: z.string().trim().email().max(320),
-  password: z.string().min(15).max(128),
+  password: z.string().min(10).max(128),
 });

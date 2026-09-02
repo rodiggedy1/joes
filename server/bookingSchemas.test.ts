@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bookingStatusSchema, createBookingSchema, instantBookingSchema, operationsBookingUpdateSchema } from "./bookingSchemas";
+import { bookingStatusSchema, createBookingSchema, instantBookingSchema, operationsBookingUpdateSchema, staffLoginSchema } from "./bookingSchemas";
 
 describe("Good Joe booking input contracts", () => {
   it("accepts a complete account-owned booking request", () => {
@@ -39,5 +39,10 @@ describe("Good Joe booking input contracts", () => {
     expect(bookingStatusSchema.safeParse("paid_out").success).toBe(false);
     expect(operationsBookingUpdateSchema.safeParse({ bookingId: 12 }).success).toBe(false);
     expect(operationsBookingUpdateSchema.safeParse({ bookingId: 12, status: "scheduled" }).success).toBe(true);
+  });
+
+  it("accepts approved Operations passwords with 10 or more characters", () => {
+    expect(staffLoginSchema.safeParse({ email: "rohan@innclusive.com", password: "1234567890" }).success).toBe(true);
+    expect(staffLoginSchema.safeParse({ email: "rohan@innclusive.com", password: "123456789" }).success).toBe(false);
   });
 });

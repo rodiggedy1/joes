@@ -23,7 +23,7 @@ function StaffLogin() {
       <p>Use your approved Good Joe Operations email and password.</p>
       <form className="ops-login-form" onSubmit={event => { event.preventDefault(); login.mutate({ email, password }); }}>
         <label><span>Work email</span><input type="email" autoComplete="username" value={email} onChange={event => setEmail(event.target.value)} required /></label>
-        <label><span>Password</span><input type="password" autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} minLength={15} required /></label>
+        <label><span>Password</span><input type="password" autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} minLength={10} required /></label>
         {login.isError && <p role="alert">Your email or password could not be verified. Please try again.</p>}
         <button className="portal-primary" type="submit" disabled={login.isPending}>{login.isPending ? "Signing in…" : <>Sign in to Operations <ChevronRight /></>}</button>
       </form>
