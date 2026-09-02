@@ -32,16 +32,16 @@
 - [ ] Validate the preferred-appointment calendar and time-window picker at desktop and mobile widths, including selection states and checkout layout, without inserting fabricated booking records.
 - [ ] Diagnose the Good Joe customer account session lost when moving from the Railway domain to `goodjoe.co` and verify the production database remains intact.
 - [x] Leave the pre-custom-domain trial customer accounts in place without transferring their browser sessions.
-- [ ] Release and verify the dedicated production staff sign-in and Operations access path for `goodjoe.co`.
+- [x] Release and verify the dedicated production staff sign-in and Operations access path for `goodjoe.co`.
 - [x] Create password-hash storage and a secure bootstrap path for the approved initial Operations administrator.
 - [x] Build the dedicated Operations email-and-password sign-in UI without customer-account access.
-- [ ] Set the approved initial staff email and a private password in Railway before releasing Operations access.
-- [ ] Verify the deployed staff-credentials schema before attempting the first Good Joe Operations sign-in.
+- [x] Set the approved initial staff email and a private password in Railway before releasing Operations access.
+- [x] Verify the deployed staff-credentials schema before attempting the first Good Joe Operations sign-in.
 - [x] Lower the Good Joe Operations password minimum from 15 to the approved 10 characters in both client and server validation.
 - [x] Diagnose and correct the failed first-admin bootstrap after Railway staff variables were applied.
 - [x] Align the runtime password policy with the approved 10-character contract so staff bootstrap failures do not silently reject valid credentials.
-- [ ] Push the runtime staff-bootstrap fix to Railway and verify the approved Operations password is accepted.
-- [ ] Complete one real production Operations sign-in for `rohan@innclusive.com` after the fix release.
+- [x] Push the runtime staff-bootstrap fix to Railway and verify the approved Operations password is accepted.
+- [x] Complete one real production Operations sign-in for `rohan@innclusive.com` after the fix release.
 - [ ] Add safe internal diagnostics that distinguish staff bootstrap failures from incorrect credentials without exposing secrets.
 - [ ] Verify server-enforced admin authorization and customer data isolation without creating fabricated records.
 - [x] Include the customer booking-prefill contract in the enforced automated test suite.
