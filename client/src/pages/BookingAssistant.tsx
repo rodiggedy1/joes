@@ -2,6 +2,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
+import { getBookingPrefill } from "@/lib/bookingPrefill";
 
 type Field = { label: string; options: string[] };
 type Flow = { service: string; matches: string[]; startingPrice: number; time: string; detail: string; payment: string; fields: Field[] };
@@ -26,8 +27,9 @@ function findFlow(text: string) { const query = text.toLowerCase(); return flows
 function replyFor(text: string, flow?: Flow) { if (flow) return `${flow.service} starts at $${flow.startingPrice}. ${flow.detail}. Ask anything, or book when you’re ready.`; if (/(insured|insurance)/.test(text.toLowerCase())) return "Before taking payment live, you’ll want to publish verified coverage details and terms here."; return "I can help you think through the job, explain the booking process, or open the right service form when you’re ready."; }
 
 export default function BookingAssistant({ open, requestText, onClose }: { open: boolean; requestText: string; onClose: () => void }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const utils = trpc.useUtils();
+  const bookingHistory = trpc.bookings.mine.useQuery(undefined, { enabled: isAuthenticated, staleTime: 60_000 });
   const messagesRef = useRef<HTMLDivElement>(null);
   const messageId = useRef(1);
   const [entry, setEntry] = useState("");
@@ -46,6 +48,7 @@ export default function BookingAssistant({ open, requestText, onClose }: { open:
   const bookAndStartAccount = trpc.auth.bookAndStartAccount.useMutation({ onSuccess: finishBooking });
   const saving = createBooking.isPending || bookAndStartAccount.isPending;
   const bookingError = createBooking.error || bookAndStartAccount.error;
+  const savedBookingDetails = getBookingPrefill(user ?? null, bookingHistory.data ?? []);
 
   const nextId = () => messageId.current++;
   const beginConversation = (text: string) => {
@@ -63,6 +66,15 @@ export default function BookingAssistant({ open, requestText, onClose }: { open:
     else setMessages([{ kind: "guide", text: guideIntro, id: 0 }]);
   }, [open, requestText]);
   useEffect(() => { if (messagesRef.current) messagesRef.current.scrollTop = messagesRef.current.scrollHeight; }, [messages]);
+  useEffect(() => {
+    if (!formOpen || !isAuthenticated) return;
+    setAnswers(current => ({
+      ...current,
+      Name: current.Name || savedBookingDetails.name,
+      Phone: current.Phone || savedBookingDetails.phone,
+      Address: current.Address || savedBookingDetails.address,
+    }));
+  }, [formOpen, isAuthenticated, savedBookingDetails.address, savedBookingDetails.name, savedBookingDetails.phone]);
 
   const openForm = (flow: Flow) => {
     setSelectedFlow(flow);
@@ -70,7 +82,7 @@ export default function BookingAssistant({ open, requestText, onClose }: { open:
     setReviewed(false);
     setFormOpen(true);
   };
-  const ready = selectedFlow.fields.every(field => answers[field.label]) && answers["Preferred time"] && answers.Address && answers.Name && answers.Phone;
+  const ready = selectedFlow.fields.every(field => answers[field.label]) && answers["Preferred time"] && answers.Address && (isAuthenticated || (answers.Name && answers.Phone));
   const payload = () => ({
     service: selectedFlow.service,
     title: `${selectedFlow.service} request`,
@@ -103,13 +115,13 @@ export default function BookingAssistant({ open, requestText, onClose }: { open:
             {selectedFlow.fields.map(field => <label key={field.label}><span>{field.label}</span><select value={answers[field.label] ?? ""} onChange={event => setAnswers({ ...answers, [field.label]: event.target.value })}><option value="">Choose one</option>{field.options.map(option => <option key={option}>{option}</option>)}</select></label>)}
             <label className="booking-address"><span>Service address</span><input value={answers.Address ?? ""} onChange={event => setAnswers({ ...answers, Address: event.target.value })} autoComplete="street-address" placeholder="Street address" /></label>
             <label><span>Preferred time</span><select value={answers["Preferred time"] ?? ""} onChange={event => setAnswers({ ...answers, "Preferred time": event.target.value })}><option value="">Choose a time</option><option>{selectedFlow.time}</option><option>First available</option><option>Pick another time</option></select></label>
-            <label><span>Your name</span><input value={answers.Name ?? ""} onChange={event => setAnswers({ ...answers, Name: event.target.value })} autoComplete="name" placeholder="Name" /></label>
-            <label><span>Mobile number</span><input type="tel" value={answers.Phone ?? ""} onChange={event => setAnswers({ ...answers, Phone: event.target.value })} autoComplete="tel" inputMode="tel" placeholder="(555) 555-5555" /></label>
+            {!isAuthenticated && <><label><span>Your name</span><input value={answers.Name ?? ""} onChange={event => setAnswers({ ...answers, Name: event.target.value })} autoComplete="name" placeholder="Name" /></label><label><span>Mobile number</span><input type="tel" value={answers.Phone ?? ""} onChange={event => setAnswers({ ...answers, Phone: event.target.value })} autoComplete="tel" inputMode="tel" placeholder="(555) 555-5555" /></label></>}
           </div>
+          {isAuthenticated && <p className="checkout-note">Booking to <strong>{user?.name || "your Good Joe account"}</strong>. Your saved details are ready; you can update the service address for this visit.</p>}
           {reviewed && <div className="checkout-summary"><div><span>Time</span><strong>{answers["Preferred time"]}</strong></div>{selectedFlow.fields.map(field => <div key={field.label}><span>{field.label}</span><strong>{answers[field.label]}</strong></div>)}</div>}
           <div className="checkout-total"><span>Starting at</span><strong>${selectedFlow.startingPrice}</strong><small>{selectedFlow.payment}</small></div>
           {reviewed ? <button className="btn wide" type="button" onClick={save} disabled={saving}>{saving ? "Saving your booking…" : "Book & open my account →"}</button> : <button className="btn wide" disabled={!ready}>Review booking →</button>}
-          <p className="checkout-note">Your booking opens your Good Joe account immediately. Mobile verification can be used later to protect and recover your account.</p>
+          {!isAuthenticated && <p className="checkout-note">Your booking opens your Good Joe account immediately. Mobile verification can be used later to protect and recover your account.</p>}
           {bookingError && <p className="checkout-error">We couldn’t save this booking. Please try again.</p>}
         </form>
       </aside>

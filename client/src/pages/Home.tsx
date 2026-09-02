@@ -93,7 +93,7 @@ export default function Home() {
       <div className="site">
         <header className="reference-header">
           <div className="brand reference-brand"><div className="logo"><JoeMark className="joe-mark" /></div><div><strong>Good Joe</strong><small>The good kind of help for home</small></div></div>
-          <div className="nav reference-nav"><a href="/services">Services <ChevronDown aria-hidden="true" /></a><span>Reviews</span><a href="#how">How it works</a><a href="/account">{isAuthenticated ? "My account" : "Account"}</a></div>
+          <div className="nav reference-nav"><a href="/services">Services <ChevronDown aria-hidden="true" /></a><span>Reviews</span><a href="#how">How it works</a><a data-good-joe-account-link="true" href="/account" aria-label={isAuthenticated ? "Open your Good Joe account" : "Open Good Joe account"}>{isAuthenticated ? "My account" : "Account"}</a></div>
           <button className="btn" onClick={() => openChat()}>Book now</button>
         </header>
         <section className="hero reference-hero">

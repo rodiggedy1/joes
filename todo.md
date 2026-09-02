@@ -23,3 +23,8 @@
 - [ ] Verify the production `/health` response and first database migration after the controlled release.
 - [x] Resolve the deployed Railway `/health` database-unavailable response before enabling live customer booking.
 - [ ] Deploy and verify the schema-aware healthcheck that confirms all booking/account tables exist before Railway accepts a release.
+- [x] Add a clear Good Joe account link in the public header that reflects the active customer session.
+- [x] Add the same account-aware link to the Services directory and all service-detail page headers.
+- [x] Prefill the signed-in customer’s known booking details without exposing or overwriting their data unexpectedly.
+- [ ] Validate the returning-customer booking flow and account persistence after refresh.
+- [x] Include the customer booking-prefill contract in the enforced automated test suite.
