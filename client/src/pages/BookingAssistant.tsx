@@ -3,6 +3,8 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { getBookingPrefill } from "@/lib/bookingPrefill";
+import { appointmentWindows, formatPreferredAppointment, formatPreferredDate, selectedAppointmentStart, type AppointmentWindow } from "@/lib/preferredAppointment";
+import { PreferredAppointmentCalendar } from "@/components/PreferredAppointmentCalendar";
 
 type Field = { label: string; options: string[] };
 type Flow = { service: string; matches: string[]; startingPrice: number; time: string; detail: string; payment: string; fields: Field[] };
@@ -38,6 +40,8 @@ export default function BookingAssistant({ open, requestText, onClose }: { open:
   const [formOpen, setFormOpen] = useState(false);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [reviewed, setReviewed] = useState(false);
+  const [preferredDate, setPreferredDate] = useState<Date | null>(null);
+  const [preferredWindow, setPreferredWindow] = useState<AppointmentWindow | null>(null);
 
   const finishBooking = async () => {
     await utils.auth.me.invalidate();
@@ -62,6 +66,8 @@ export default function BookingAssistant({ open, requestText, onClose }: { open:
     setFormOpen(false);
     setReviewed(false);
     setAnswers({});
+    setPreferredDate(null);
+    setPreferredWindow(null);
     if (requestText) beginConversation(requestText);
     else setMessages([{ kind: "guide", text: guideIntro, id: 0 }]);
   }, [open, requestText]);
@@ -80,14 +86,18 @@ export default function BookingAssistant({ open, requestText, onClose }: { open:
     setSelectedFlow(flow);
     setAnswers({});
     setReviewed(false);
+    setPreferredDate(null);
+    setPreferredWindow(null);
     setFormOpen(true);
   };
-  const ready = selectedFlow.fields.every(field => answers[field.label]) && answers["Preferred time"] && answers.Address && (isAuthenticated || (answers.Name && answers.Phone));
+  const selectedAppointment = preferredDate && preferredWindow ? formatPreferredAppointment(preferredDate, preferredWindow) : "";
+  const ready = selectedFlow.fields.every(field => answers[field.label]) && preferredDate && preferredWindow && answers.Address && (isAuthenticated || (answers.Name && answers.Phone));
   const payload = () => ({
     service: selectedFlow.service,
     title: `${selectedFlow.service} request`,
-    customerRequest: `${selectedFlow.fields.map(field => `${field.label}: ${answers[field.label]}`).join(" · ")}. Preferred time: ${answers["Preferred time"]}.`,
-    timeWindow: answers["Preferred time"] || selectedFlow.time,
+    customerRequest: `${selectedFlow.fields.map(field => `${field.label}: ${answers[field.label]}`).join(" · ")}. Preferred appointment: ${selectedAppointment}.`,
+    timeWindow: selectedAppointment || null,
+    scheduledFor: preferredDate && preferredWindow ? selectedAppointmentStart(preferredDate, preferredWindow) : null,
     address: answers.Address,
     quotedCents: selectedFlow.startingPrice * 100,
   });
@@ -114,14 +124,14 @@ export default function BookingAssistant({ open, requestText, onClose }: { open:
           <div className="booking-form-fields">
             {selectedFlow.fields.map(field => <label key={field.label}><span>{field.label}</span><select value={answers[field.label] ?? ""} onChange={event => setAnswers({ ...answers, [field.label]: event.target.value })}><option value="">Choose one</option>{field.options.map(option => <option key={option}>{option}</option>)}</select></label>)}
             <label className="booking-address"><span>Service address</span><input value={answers.Address ?? ""} onChange={event => setAnswers({ ...answers, Address: event.target.value })} autoComplete="street-address" placeholder="Street address" /></label>
-            <label><span>Preferred time</span><select value={answers["Preferred time"] ?? ""} onChange={event => setAnswers({ ...answers, "Preferred time": event.target.value })}><option value="">Choose a time</option><option>{selectedFlow.time}</option><option>First available</option><option>Pick another time</option></select></label>
+            <div className="appointment-field"><div className="appointment-field-head"><span>Preferred appointment</span><small>We’ll confirm this window before dispatch.</small></div><PreferredAppointmentCalendar value={preferredDate} onChange={date => { setPreferredDate(date); setReviewed(false); }} /><div className="appointment-window-grid" role="group" aria-label="Choose a preferred time window">{appointmentWindows.map(window => <button type="button" key={window.id} className={preferredWindow?.id === window.id ? "selected" : ""} onClick={() => { setPreferredWindow(window); setReviewed(false); }} aria-pressed={preferredWindow?.id === window.id}><strong>{window.label}</strong><span>{window.detail}</span></button>)}</div>{preferredDate && <p className="appointment-selection">Preferred: <strong>{formatPreferredDate(preferredDate)}{preferredWindow ? ` · ${preferredWindow.label}` : ""}</strong></p>}</div>
             {!isAuthenticated && <><label><span>Your name</span><input value={answers.Name ?? ""} onChange={event => setAnswers({ ...answers, Name: event.target.value })} autoComplete="name" placeholder="Name" /></label><label><span>Mobile number</span><input type="tel" value={answers.Phone ?? ""} onChange={event => setAnswers({ ...answers, Phone: event.target.value })} autoComplete="tel" inputMode="tel" placeholder="(555) 555-5555" /></label></>}
           </div>
           {isAuthenticated && <p className="checkout-note">Booking to <strong>{user?.name || "your Good Joe account"}</strong>. Your saved details are ready; you can update the service address for this visit.</p>}
-          {reviewed && <div className="checkout-summary"><div><span>Time</span><strong>{answers["Preferred time"]}</strong></div>{selectedFlow.fields.map(field => <div key={field.label}><span>{field.label}</span><strong>{answers[field.label]}</strong></div>)}</div>}
+          {reviewed && <div className="checkout-summary"><div><span>Preferred appointment</span><strong>{selectedAppointment}</strong></div>{selectedFlow.fields.map(field => <div key={field.label}><span>{field.label}</span><strong>{answers[field.label]}</strong></div>)}</div>}
           <div className="checkout-total"><span>Starting at</span><strong>${selectedFlow.startingPrice}</strong><small>{selectedFlow.payment}</small></div>
           {reviewed ? <button className="btn wide" type="button" onClick={save} disabled={saving}>{saving ? "Saving your booking…" : "Book & open my account →"}</button> : <button className="btn wide" disabled={!ready}>Review booking →</button>}
-          {!isAuthenticated && <p className="checkout-note">Your booking opens your Good Joe account immediately. Mobile verification can be used later to protect and recover your account.</p>}
+          {!isAuthenticated && <p className="checkout-note">Your booking opens your Good Joe account immediately. Your selected appointment is a preference until Good Joe confirms it.</p>}
           {bookingError && <p className="checkout-error">We couldn’t save this booking. Please try again.</p>}
         </form>
       </aside>

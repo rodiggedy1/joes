@@ -163,8 +163,8 @@ export async function createBookingForCustomer(customerId: number, input: NewBoo
   await db.insert(bookingEvents).values({
     bookingId,
     actor: "system",
-    title: "Booking saved to your account",
-    detail: "Good Joe received your request and is preparing the next step.",
+    title: "Preferred appointment saved",
+    detail: input.timeWindow ? `${input.timeWindow} · Good Joe received your request and will confirm the service window.` : "Good Joe received your request and is preparing the next step.",
   });
 
   const booking = await getBookingForCustomer(customerId, bookingId);

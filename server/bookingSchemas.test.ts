@@ -7,7 +7,8 @@ describe("Good Joe booking input contracts", () => {
       service: "Pressure washing",
       title: "Patio and walkway refresh",
       customerRequest: "Can someone pressure wash the patio?",
-      timeWindow: "Friday · 1–3 PM",
+      timeWindow: "Fri, Sep 4 · Afternoon (2:00–5:00 PM)",
+      scheduledFor: new Date("2026-09-04T14:00:00"),
       quotedCents: 14900,
     });
     expect(result.success).toBe(true);
@@ -22,7 +23,8 @@ describe("Good Joe booking input contracts", () => {
       service: "Handyman visit",
       title: "Handyman visit request",
       customerRequest: "Job type: Small repair.",
-      timeWindow: "Tomorrow · 10 AM",
+      timeWindow: "Thu, Sep 3 · Afternoon (2:00–5:00 PM)",
+      scheduledFor: new Date("2026-09-03T14:00:00"),
       address: "123 Example Street",
       quotedCents: 17900,
       customerName: "Taylor Jordan",
