@@ -6,6 +6,7 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
+import { isDatabaseHealthy } from "../health";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 
@@ -34,6 +35,14 @@ async function startServer() {
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  app.get("/health", async (_req, res) => {
+    const databaseReady = await isDatabaseHealthy();
+    if (!databaseReady) {
+      res.status(503).json({ status: "degraded", database: "unavailable" });
+      return;
+    }
+    res.status(200).json({ status: "ok", database: "connected" });
+  });
   registerStorageProxy(app);
   registerOAuthRoutes(app);
   // tRPC API

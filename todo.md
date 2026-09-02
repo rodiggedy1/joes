@@ -6,10 +6,18 @@
 - [x] Add protected customer booking procedures and admin-only operations procedures.
 - [x] Build customer account and staff operations portal interfaces with deliberate empty states.
 - [x] Repair the BookingAssistant TypeScript syntax error and verify the portal test suite.
-- [ ] Replace the booking OAuth interruption with an immediate browser-bound customer account session after booking.
+- [x] Replace the booking OAuth interruption with an immediate browser-bound customer account session after booking.
 - [x] Add an integration test proving the instant booking mutation provisions a customer session and saves the booking under that customer.
 - [x] Add router-level coverage for the public booking-to-account mutation and its cookie response.
-- [ ] Add a private booking-details and timeline surface in the customer account portal.
+- [x] Add a private booking-details and timeline surface in the customer account portal.
 - [ ] Add optional post-booking SMS verification and account recovery through the connected provider without blocking confirmation.
 - [ ] Validate booking handoff, customer data isolation, and staff-only operations access in the browser.
 - [ ] Configure and verify production environment requirements before publishing the account system to Railway.
+- [ ] Audit the existing Railway service, deployment settings, and GitHub source without changing production.
+- [ ] Configure a production MySQL/TiDB database, signed session secret, and separate staff access path for Railway.
+- [ ] Apply the Good Joe booking/account schema to the production database and verify connectivity.
+- [ ] Verify the deployed customer booking handoff and staff-only Operations gate before release.
+- [x] Add a database-aware production `/health` endpoint and a dedicated `db:migrate` command.
+- [ ] Verify Railway runs `pnpm db:migrate` as the Good Joe service pre-deploy command.
+- [ ] Verify Railway uses `/health` as the Good Joe service deployment healthcheck.
+- [ ] Verify the production `/health` response and first database migration after the controlled release.
