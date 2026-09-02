@@ -8,7 +8,7 @@ export async function isDatabaseHealthy(): Promise<boolean> {
 
   try {
     await db.execute(sql`SELECT 1`);
-    const requiredTables = ["users", "bookings", "booking_events"];
+    const requiredTables = ["users", "bookings", "booking_events", "staff_credentials"];
     for (const tableName of requiredTables) {
       const result = await db.execute(sql`
         SELECT 1

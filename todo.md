@@ -36,5 +36,6 @@
 - [x] Create password-hash storage and a secure bootstrap path for the approved initial Operations administrator.
 - [x] Build the dedicated Operations email-and-password sign-in UI without customer-account access.
 - [ ] Set the approved initial staff email and a private password in Railway before releasing Operations access.
+- [ ] Verify the deployed staff-credentials schema before attempting the first Good Joe Operations sign-in.
 - [ ] Verify server-enforced admin authorization and customer data isolation without creating fabricated records.
 - [x] Include the customer booking-prefill contract in the enforced automated test suite.

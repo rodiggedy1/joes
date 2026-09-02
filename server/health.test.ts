@@ -11,11 +11,12 @@ describe("isDatabaseHealthy", () => {
       .mockResolvedValueOnce([{ 1: 1 }])
       .mockResolvedValueOnce([[{ 1: 1 }]])
       .mockResolvedValueOnce([[{ 1: 1 }]])
+      .mockResolvedValueOnce([[{ 1: 1 }]])
       .mockResolvedValueOnce([[{ 1: 1 }]]);
     getDb.mockResolvedValue({ execute });
 
     await expect(isDatabaseHealthy()).resolves.toBe(true);
-    expect(execute).toHaveBeenCalledTimes(4);
+    expect(execute).toHaveBeenCalledTimes(5);
   });
 
   it("reports not ready when no database is configured or the query fails", async () => {
