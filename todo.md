@@ -30,4 +30,11 @@
 - [x] Replace the placeholder preferred-time selector with a Good Joe preferred-appointment calendar and time-window picker.
 - [x] Save the selected preferred appointment date and time in each customer booking and surface it in the account timeline as pending confirmation.
 - [ ] Validate the preferred-appointment calendar and time-window picker at desktop and mobile widths, including selection states and checkout layout, without inserting fabricated booking records.
+- [ ] Diagnose the Good Joe customer account session lost when moving from the Railway domain to `goodjoe.co` and verify the production database remains intact.
+- [x] Leave the pre-custom-domain trial customer accounts in place without transferring their browser sessions.
+- [ ] Release and verify the dedicated production staff sign-in and Operations access path for `goodjoe.co`.
+- [x] Create password-hash storage and a secure bootstrap path for the approved initial Operations administrator.
+- [x] Build the dedicated Operations email-and-password sign-in UI without customer-account access.
+- [ ] Set the approved initial staff email and a private password in Railway before releasing Operations access.
+- [ ] Verify server-enforced admin authorization and customer data isolation without creating fabricated records.
 - [x] Include the customer booking-prefill contract in the enforced automated test suite.

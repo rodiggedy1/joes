@@ -30,3 +30,8 @@ export const operationsBookingUpdateSchema = z.object({
 }).refine(input => input.status !== undefined || input.providerName !== undefined || input.providerEta !== undefined, {
   message: "Provide at least one booking update",
 });
+
+export const staffLoginSchema = z.object({
+  email: z.string().trim().email().max(320),
+  password: z.string().min(15).max(128),
+});

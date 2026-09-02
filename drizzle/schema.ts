@@ -28,6 +28,28 @@ export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
 /**
+ * Credentials are restricted to approved internal Operations users. Customer
+ * browser accounts never receive a credential row and can never gain staff
+ * access through this table.
+ */
+export const staffCredentials = mysqlTable("staff_credentials", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id")
+    .notNull()
+    .unique()
+    .references(() => users.id, { onDelete: "cascade" }),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  passwordHash: varchar("password_hash", { length: 512 }).notNull(),
+  failedLoginCount: int("failed_login_count").default(0).notNull(),
+  lockedUntil: timestamp("locked_until"),
+  passwordChangedAt: timestamp("password_changed_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type StaffCredential = typeof staffCredentials.$inferSelect;
+
+/**
  * A customer-owned service request. Monetary values are stored in integer cents,
  * and scheduledFor is kept as a UTC timestamp for timezone-safe presentation.
  */

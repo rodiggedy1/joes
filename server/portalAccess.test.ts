@@ -30,4 +30,19 @@ describe("Good Joe portal access", () => {
     }));
     await expect(caller.operations.overview()).rejects.toMatchObject({ code: "FORBIDDEN" });
   });
+
+  it("does not accept a customer-session admin role in place of a dedicated staff session", async () => {
+    const caller = appRouter.createCaller(contextFor({
+      id: 8,
+      openId: "preview-admin",
+      name: "Preview Admin",
+      email: "admin@example.com",
+      loginMethod: "manus",
+      role: "admin",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      lastSignedIn: new Date(),
+    }));
+    await expect(caller.operations.overview()).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
 });

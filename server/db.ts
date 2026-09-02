@@ -1,6 +1,6 @@
 import { and, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { Booking, BookingEvent, InsertUser, User, bookingEvents, bookings, users } from "../drizzle/schema";
+import { Booking, BookingEvent, InsertUser, StaffCredential, User, bookingEvents, bookings, staffCredentials, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -107,6 +107,59 @@ export async function createBrowserBookingAccount(input: { name: string; phone: 
   const user = await getUserByOpenId(openId);
   if (!user) throw new Error("Customer account could not be created");
   return user;
+}
+
+export type StaffCredentialWithUser = { credential: StaffCredential; user: User };
+
+export async function findStaffCredentialByEmail(email: string): Promise<StaffCredentialWithUser | null> {
+  const database = await getDb();
+  if (!database) throw new Error("Database is not available");
+  const rows = await database.select({ credential: staffCredentials, user: users })
+    .from(staffCredentials)
+    .innerJoin(users, eq(staffCredentials.userId, users.id))
+    .where(eq(staffCredentials.email, email))
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+export async function ensureInitialStaffAdmin(input: { email: string; passwordHash: string }): Promise<void> {
+  const email = input.email.trim().toLowerCase();
+  if (!email || await findStaffCredentialByEmail(email)) return;
+  const database = await getDb();
+  if (!database) throw new Error("Database is not available");
+  try {
+    await database.transaction(async tx => {
+      const existing = await tx.select().from(staffCredentials).where(eq(staffCredentials.email, email)).limit(1);
+      if (existing[0]) return;
+      const inserted = await tx.insert(users).values({
+        openId: `staff_${crypto.randomUUID().replace(/-/g, "")}`,
+        name: "Good Joe Operations",
+        email,
+        loginMethod: "staff_password",
+        role: "admin",
+        lastSignedIn: new Date(),
+      }).$returningId();
+      const userId = inserted[0]?.id;
+      if (!userId) throw new Error("Staff account could not be created");
+      await tx.insert(staffCredentials).values({ userId, email, passwordHash: input.passwordHash });
+    });
+  } catch (error) {
+    // Simultaneous first sign-ins can contend for the same unique staff email.
+    if (await findStaffCredentialByEmail(email)) return;
+    throw error;
+  }
+}
+
+export async function recordStaffLoginFailure(credentialId: number, lockedUntil: Date | null, failedLoginCount: number) {
+  const database = await getDb();
+  if (!database) throw new Error("Database is not available");
+  await database.update(staffCredentials).set({ failedLoginCount, lockedUntil }).where(eq(staffCredentials.id, credentialId));
+}
+
+export async function resetStaffLoginFailures(credentialId: number) {
+  const database = await getDb();
+  if (!database) throw new Error("Database is not available");
+  await database.update(staffCredentials).set({ failedLoginCount: 0, lockedUntil: null }).where(eq(staffCredentials.id, credentialId));
 }
 
 export type BookingWithEvents = {

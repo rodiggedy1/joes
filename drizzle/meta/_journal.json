@@ -15,6 +15,13 @@
       "when": 1788311519611,
       "tag": "0001_brainy_klaw",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1788330397782,
+      "tag": "0002_flowery_marrow",
+      "breakpoints": true
     }
   ]
 }
