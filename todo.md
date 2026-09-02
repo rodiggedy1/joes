@@ -38,6 +38,10 @@
 - [x] Set the approved initial staff email and a private password in Railway before releasing Operations access.
 - [x] Verify the deployed staff-credentials schema before attempting the first Good Joe Operations sign-in.
 - [x] Lower the Good Joe Operations password minimum from 15 to the approved 10 characters in both client and server validation.
+- [x] Add a reference-aligned “What else can we take off your list?” section with real Good Joe service cards in the customer account.
+- [x] Route each account service card into the existing preselected Good Joe booking flow and enforce supported services on the backend.
+- [ ] Verify one authenticated account-service booking persists to the live customer account and appears in the Operations queue without creating fabricated records.
+- [ ] Visually verify the authenticated account service-card section and its booking handoffs on desktop and mobile.
 - [x] Diagnose and correct the failed first-admin bootstrap after Railway staff variables were applied.
 - [x] Align the runtime password policy with the approved 10-character contract so staff bootstrap failures do not silently reject valid credentials.
 - [x] Push the runtime staff-bootstrap fix to Railway and verify the approved Operations password is accepted.

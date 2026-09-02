@@ -1,9 +1,11 @@
 import { z } from "zod";
+import { bookableServiceNames } from "../shared/bookableServices";
 
 export const bookingStatusSchema = z.enum(["requested", "scheduled", "in_progress", "completed", "cancelled"]);
+export const bookableServiceSchema = z.enum(bookableServiceNames);
 
 export const createBookingSchema = z.object({
-  service: z.string().trim().min(2).max(120),
+  service: bookableServiceSchema,
   title: z.string().trim().min(2).max(180),
   customerRequest: z.string().trim().min(2).max(2_000),
   timeWindow: z.string().trim().min(2).max(80).nullable().optional(),

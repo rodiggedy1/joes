@@ -5,9 +5,10 @@ import { trpc } from "@/lib/trpc";
 import { getBookingPrefill } from "@/lib/bookingPrefill";
 import { appointmentWindows, formatPreferredAppointment, formatPreferredDate, selectedAppointmentStart, type AppointmentWindow } from "@/lib/preferredAppointment";
 import { PreferredAppointmentCalendar } from "@/components/PreferredAppointmentCalendar";
+import type { BookableServiceName } from "@shared/bookableServices";
 
 type Field = { label: string; options: string[] };
-type Flow = { service: string; matches: string[]; startingPrice: number; time: string; detail: string; payment: string; fields: Field[] };
+type Flow = { service: BookableServiceName; matches: string[]; startingPrice: number; time: string; detail: string; payment: string; fields: Field[] };
 type ChatMessage = { kind: "guide" | "user"; text: string; id: number; flow?: Flow };
 
 const flows: Flow[] = [

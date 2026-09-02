@@ -1,13 +1,21 @@
 /** Customer-facing Good Joe account: private booking history, timing, and safe request actions. */
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
-import { CalendarClock, ChevronRight, ClipboardList, CreditCard, LogOut, MapPin, MessageCircle, Plus, ShieldCheck, Sparkles } from "lucide-react";
+import { Armchair, ArrowRight, CalendarClock, ChevronRight, ClipboardList, CreditCard, ImageIcon, LogOut, MapPin, MessageCircle, Plus, ShieldCheck, Sparkles, Wrench } from "lucide-react";
 import { useMemo, useState } from "react";
 import "./portal.css";
+import "./accountDiscovery.css";
 
 const statusCopy: Record<string, string> = { requested: "Request received", scheduled: "Scheduled", in_progress: "In progress", completed: "Completed", cancelled: "Cancelled" };
 function formatDate(value: Date | null) { return value ? new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(value)) : "Timing to be confirmed"; }
 function currency(cents: number) { return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(cents / 100); }
+
+const additionalServices = [
+  { label: "Furniture assembly", description: "Beds, desks & more", icon: Armchair, request: "furniture assembly", tone: "" },
+  { label: "Picture hanging", description: "Art, mirrors & shelves", icon: ImageIcon, request: "picture hanging", tone: "" },
+  { label: "Minor home repairs", description: "Small fixes around the house", icon: Wrench, request: "minor home repairs", tone: "" },
+  { label: "Cleaning", description: "One-time or recurring", icon: Sparkles, request: "home cleaning", tone: "cleaning" },
+];
 
 export default function Account() {
   const { user, isAuthenticated, loading, logout } = useAuth();
@@ -27,6 +35,7 @@ export default function Account() {
     <header className="portal-topbar"><a className="portal-wordmark" href="/">GOOD JOE</a><nav><a href="/">Home</a><a className="active" href="/account">My bookings</a>{user?.role === "admin" && <a href="/operations">Operations</a>}</nav><div className="portal-profile"><span>{user?.name?.split(" ")[0] || "My account"}</span><button onClick={logout} aria-label="Sign out"><LogOut /></button></div></header>
     <section className="account-hero"><div><div className="portal-eyebrow">MY HOME · GOOD JOE</div><h1>Welcome back{user?.name ? `, ${user.name.split(" ")[0]}` : ""}.</h1><p>Your home requests, timing, and updates are all here.</p></div><a className="portal-primary" href="/"><Plus /> Start a new request</a></section>
     <section className="account-summary">{[{ label: "Active bookings", value: bookings.filter(item => !["completed", "cancelled"].includes(item.booking.status)).length, icon: ClipboardList }, { label: "Next visit", value: nextBooking ? formatDate(nextBooking.booking.scheduledFor).split(",")[0] : "—", icon: CalendarClock }, { label: "Account access", value: user?.loginMethod === "booking_browser" ? "This device" : "Secure", icon: ShieldCheck }].map(item => <div className="account-stat" key={item.label}><item.icon /><div><span>{item.label}</span><strong>{item.value}</strong></div></div>)}</section>
+    <section className="account-discovery" aria-labelledby="account-discovery-heading"><div className="section-heading"><div><div className="portal-eyebrow">MORE JOE CAN HANDLE</div><h2 id="account-discovery-heading">What else can we take off your list?</h2></div><a href="/services">View all services <ArrowRight /></a></div><div className="account-discovery-grid">{additionalServices.map(service => <a className="account-discovery-card" href={`/?service=${encodeURIComponent(service.request)}`} key={service.label}><div className={`account-discovery-icon ${service.tone}`}><service.icon /></div><div className="account-discovery-copy"><strong>{service.label}</strong><p>{service.description}</p><span>Get started <ArrowRight /></span></div></a>)}</div></section>
     <section className="account-section"><div className="section-heading"><div><div className="portal-eyebrow">YOUR BOOKINGS</div><h2>Everything you’ve asked Joe to handle.</h2></div>{bookings.length > 0 && <span className="record-count">{bookings.length} {bookings.length === 1 ? "booking" : "bookings"}</span>}</div>{bookingsQuery.isLoading ? <div className="portal-empty"><Sparkles /><p>Loading your booking history…</p></div> : bookings.length === 0 ? <div className="portal-empty account-empty"><div className="portal-icon"><ClipboardList /></div><h3>Your booking history starts here.</h3><p>When you book with Good Joe, the service, timing, and updates will appear in this account.</p><a className="portal-primary" href="/">Tell Joe what you need <ChevronRight /></a></div> : <div className="account-bookings">{bookings.map(({ booking, events }) => {
       const detailsOpen = expandedBookingId === booking.id;
       const isPendingConfirmation = booking.status === "requested";
