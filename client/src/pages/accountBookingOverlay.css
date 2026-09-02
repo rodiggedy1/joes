@@ -1,0 +1,1 @@
+.account-help button{display:inline-flex;align-items:center;gap:4px;margin-left:auto;border:0;background:transparent;padding:0;color:#354f28;font:inherit;font-size:13px;font-weight:850;cursor:pointer}.account-help button:focus-visible{outline:3px solid #c6e83c;outline-offset:3px}@media(max-width:540px){.account-help button{display:none}}
