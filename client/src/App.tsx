@@ -15,9 +15,11 @@ import MovingHelp from "./pages/MovingHelp";
 import JunkRemoval from "./pages/JunkRemoval";
 import PressureWashing from "./pages/PressureWashing";
 import GoodJoeBranding from "./components/GoodJoeBranding";
-
+import Account from "./pages/Account";
+import Operations from "./pages/Operations";
 
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
@@ -30,6 +32,8 @@ function Router() {
       <Route path={"/services/moving-help"} component={MovingHelp} />
       <Route path={"/services/junk-removal"} component={JunkRemoval} />
       <Route path={"/services/pressure-washing"} component={PressureWashing} />
+      <Route path={"/account"} component={Account} />
+      <Route path={"/operations"} component={Operations} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

@@ -3,6 +3,7 @@
  * Preserve the warm paper canvas, charcoal typography, lime-and-forest actions, approved rating badge, and AI booking flow.
  */
 import { useEffect, useState } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { ArrowRight, ArrowUp, CalendarDays, ChevronDown, Grid2X2, Leaf, LockKeyhole, ShieldCheck, Sparkles, Star, Tv, Wrench } from "lucide-react";
 import BookingAssistant from "./BookingAssistant";
 import "./ReferenceHero.css";
@@ -52,6 +53,13 @@ function JoeMark({ className = "" }: { className?: string }) {
 }
 
 export default function Home() {
+  // The useAuth hook provides authentication state.
+  // To implement login/logout, call logout(), or start login from an event
+  // handler: onClick={() => startLogin()} (imported from "@/const"). Never call
+  // startLogin() during render (no href={startLogin()}) — it mints a one-time
+  // nonce cookie and must run only at the moment of navigation.
+  const { isAuthenticated } = useAuth();
+
   const [chatOpen, setChatOpen] = useState(false);
   const [chatRequest, setChatRequest] = useState("");
   const [embedInput, setEmbedInput] = useState("");
@@ -85,7 +93,7 @@ export default function Home() {
       <div className="site">
         <header className="reference-header">
           <div className="brand reference-brand"><div className="logo"><JoeMark className="joe-mark" /></div><div><strong>Good Joe</strong><small>The good kind of help for home</small></div></div>
-          <div className="nav reference-nav"><a href="/services">Services <ChevronDown aria-hidden="true" /></a><span>Reviews</span><a href="#how">How it works</a><span>About</span></div>
+          <div className="nav reference-nav"><a href="/services">Services <ChevronDown aria-hidden="true" /></a><span>Reviews</span><a href="#how">How it works</a><a href="/account">{isAuthenticated ? "My account" : "Account"}</a></div>
           <button className="btn" onClick={() => openChat()}>Book now</button>
         </header>
         <section className="hero reference-hero">

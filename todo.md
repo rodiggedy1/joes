@@ -2,3 +2,14 @@
 - [x] Verify the chat widget, embedded request form, service actions, and booking modal behavior.
 - [x] Check desktop and mobile presentation against the supplied responsive styles.
 - [ ] Save a final checkpoint and deliver the project version.
+- [x] Add persistent bookings and booking-event data structures with customer ownership.
+- [x] Add protected customer booking procedures and admin-only operations procedures.
+- [x] Build customer account and staff operations portal interfaces with deliberate empty states.
+- [x] Repair the BookingAssistant TypeScript syntax error and verify the portal test suite.
+- [ ] Replace the booking OAuth interruption with an immediate browser-bound customer account session after booking.
+- [x] Add an integration test proving the instant booking mutation provisions a customer session and saves the booking under that customer.
+- [x] Add router-level coverage for the public booking-to-account mutation and its cookie response.
+- [ ] Add a private booking-details and timeline surface in the customer account portal.
+- [ ] Add optional post-booking SMS verification and account recovery through the connected provider without blocking confirmation.
+- [ ] Validate booking handoff, customer data isolation, and staff-only operations access in the browser.
+- [ ] Configure and verify production environment requirements before publishing the account system to Railway.
