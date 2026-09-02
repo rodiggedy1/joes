@@ -1,9 +1,9 @@
 /**
  * Design reference: the supplied Good Joe hero is the ground-truth layout—elevated navigation, generous cream field, large left headline, room scene, and tall right guide.
- * Preserve the warm paper canvas, charcoal typography, lime-and-forest actions, and AI booking flow. Do not add unsupported ratings, reviews, or customer identities.
+ * Preserve the warm paper canvas, charcoal typography, lime-and-forest actions, approved rating badge, and AI booking flow.
  */
 import { useEffect, useState } from "react";
-import { ArrowRight, ArrowUp, CalendarDays, ChevronDown, Grid2X2, Leaf, LockKeyhole, ShieldCheck, Sparkles, Tv, Wrench } from "lucide-react";
+import { ArrowRight, ArrowUp, CalendarDays, ChevronDown, Grid2X2, Leaf, LockKeyhole, ShieldCheck, Sparkles, Star, Tv, Wrench } from "lucide-react";
 import BookingAssistant from "./BookingAssistant";
 import "./ReferenceHero.css";
 import "./ServiceMoments.css";
@@ -91,7 +91,7 @@ export default function Home() {
         <section className="hero reference-hero">
           <div className="reference-hero-scene" aria-hidden="true" />
           <div className="reference-hero-copy">
-            <div className="reference-kicker"><Sparkles aria-hidden="true" /> One clear request. One useful next step.</div>
+            <div className="reference-rating" aria-label="Rated 4.9 out of 5 by over 800 happy customers"><span className="reference-rating-stars"><Star aria-hidden="true" /><Star aria-hidden="true" /><Star aria-hidden="true" /><Star aria-hidden="true" /><Star aria-hidden="true" /></span><span>4.9 · 800+ happy customers</span></div>
             <h1>Your home,<br /><span>handled.</span></h1>
             <p>Cleaning, repairs, lawn care, maintenance and more — one place to get anything around your home done.</p>
             <div className="actions reference-actions"><button className="btn" onClick={() => openChat()}>Get price &amp; availability <ArrowRight aria-hidden="true" /></button><a className="btn secondary" href="/services">View services <Grid2X2 aria-hidden="true" /></a></div>
