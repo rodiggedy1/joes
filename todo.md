@@ -21,3 +21,5 @@
 - [ ] Verify Railway runs `pnpm db:migrate` as the Good Joe service pre-deploy command.
 - [ ] Verify Railway uses `/health` as the Good Joe service deployment healthcheck.
 - [ ] Verify the production `/health` response and first database migration after the controlled release.
+- [x] Resolve the deployed Railway `/health` database-unavailable response before enabling live customer booking.
+- [ ] Deploy and verify the schema-aware healthcheck that confirms all booking/account tables exist before Railway accepts a release.

@@ -8,6 +8,18 @@ export async function isDatabaseHealthy(): Promise<boolean> {
 
   try {
     await db.execute(sql`SELECT 1`);
+    const requiredTables = ["users", "bookings", "booking_events"];
+    for (const tableName of requiredTables) {
+      const result = await db.execute(sql`
+        SELECT 1
+        FROM information_schema.tables
+        WHERE table_schema = DATABASE()
+          AND table_name = ${tableName}
+        LIMIT 1
+      `);
+      const rows = Array.isArray(result) ? result[0] : result;
+      if (!Array.isArray(rows) || rows.length === 0) return false;
+    }
     return true;
   } catch {
     console.error("[Health] Database readiness check failed");
