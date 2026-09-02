@@ -42,6 +42,7 @@
 - [x] Route each account service card into the existing preselected Good Joe booking flow and enforce supported services on the backend.
 - [ ] Verify one authenticated account-service booking persists to the live customer account and appears in the Operations queue without creating fabricated records.
 - [ ] Visually verify the authenticated account service-card section and its booking handoffs on desktop and mobile.
+- [x] Expand the customer account service-card section to show every directly bookable Good Joe service in the existing backend flow.
 - [x] Diagnose and correct the failed first-admin bootstrap after Railway staff variables were applied.
 - [x] Align the runtime password policy with the approved 10-character contract so staff bootstrap failures do not silently reject valid credentials.
 - [x] Push the runtime staff-bootstrap fix to Railway and verify the approved Operations password is accepted.
