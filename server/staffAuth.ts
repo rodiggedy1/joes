@@ -15,7 +15,7 @@ export function normalizeStaffEmail(email: string) {
 }
 
 export function isValidStaffPassword(password: string) {
-  return password.length >= 15 && password.length <= MAX_PASSWORD_LENGTH;
+  return password.length >= 10 && password.length <= MAX_PASSWORD_LENGTH;
 }
 
 async function deriveKey(password: string, salt: Buffer) {

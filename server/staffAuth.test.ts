@@ -5,9 +5,9 @@ const user = { id: 9, openId: "staff_test", name: "Operations", email: "rohan@in
 
 describe("Good Joe staff password authentication", () => {
   it("stores passwords as salted hashes and verifies only the correct password", async () => {
-    const hash = await hashStaffPassword("a long operations passphrase");
-    expect(hash).not.toContain("a long operations passphrase");
-    await expect(verifyStaffPassword("a long operations passphrase", hash)).resolves.toBe(true);
+    const hash = await hashStaffPassword("goodjoe123");
+    expect(hash).not.toContain("goodjoe123");
+    await expect(verifyStaffPassword("goodjoe123", hash)).resolves.toBe(true);
     await expect(verifyStaffPassword("different password phrase", hash)).resolves.toBe(false);
   });
 
