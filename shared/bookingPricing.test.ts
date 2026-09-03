@@ -24,12 +24,58 @@ describe("Good Joe scope-based booking estimates", () => {
   it("calculates labor-only moving by helpers and hours without implying a truck is included", () => {
     const estimate = calculateBookingEstimate("Moving help", {
       "Help needed": "Load my truck",
-      Helpers: "Two helpers",
-      Duration: "Three hours",
-      "Move size": "Studio / one room",
+      Helpers: "2 helpers",
+      Duration: "3 hours",
+      "Certificate of insurance": "No",
+      "Boxes or materials": "No",
+      "Building access": "Ground floor / easy access",
     });
     expect(estimate.estimatedCents).toBe(59_500);
     expect(estimate.requiresReview).toBe(false);
+  });
+
+  it("prices the refined Handy-structured count and duration inputs without changing published minimums", () => {
+    const furniture = calculateBookingEstimate("Furniture assembly", {
+      "Small item count": "2–3",
+      "Medium item count": "0",
+      "Large item count": "0",
+      "Planned service time": "2 hours",
+      "Additional purchase or haul": "No",
+    });
+    const cleaning = calculateBookingEstimate("Home cleaning", {
+      Bedrooms: "2 bedrooms",
+      Bathrooms: "2 bathrooms",
+      "Planned service time": "3.5 hours",
+      "Cleaning type": "Standard reset",
+    });
+    const hanging = calculateBookingEstimate("Picture hanging", {
+      "Small item count": "3–5",
+      "Large or heavy item count": "0",
+      "Shelves to install": "No",
+      "Ladder height": "6 ft ladder",
+      "Planned service time": "2 hours",
+    });
+    const handyman = calculateBookingEstimate("Handyman visit", {
+      "What needs help?": "Rehang a loose cabinet door.",
+      "How many tasks?": "Two or three tasks",
+      "Parts or hardware": "I have them",
+      "Planned service time": "2.5 hours",
+    });
+    const electrical = calculateBookingEstimate("Electrical & lighting", {
+      "Light fixtures": "2",
+      "Dimmers or switches": "0",
+      "Ceiling fans": "0",
+      "Ladder height": "No ladder",
+      "Wiring access": "Existing wiring is accessible",
+      "Planned service time": "2 hours",
+    });
+
+    expect(furniture.estimatedCents).toBe(16_900);
+    expect(cleaning.estimatedCents).toBe(23_900);
+    expect(hanging.estimatedCents).toBe(16_900);
+    expect(handyman.estimatedCents).toBe(22_900);
+    expect(electrical.estimatedCents).toBe(21_900);
+    expect([furniture, cleaning, hanging, handyman, electrical].every(estimate => !estimate.requiresReview)).toBe(true);
   });
 
   it("keeps complex painting and licensed-work scope in review instead of representing it as a final price", () => {
@@ -39,9 +85,12 @@ describe("Good Joe scope-based booking estimates", () => {
       Access: "High access or furniture moving",
     });
     const electrical = calculateBookingEstimate("Electrical & lighting", {
-      Project: "Light fixture",
-      "Item count": "One item",
-      Access: "New wiring or panel work",
+      "Light fixtures": "1",
+      "Dimmers or switches": "0",
+      "Ceiling fans": "0",
+      "Ladder height": "No ladder",
+      "Wiring access": "New wiring or panel work",
+      "Planned service time": "2 hours",
     });
     expect(painting.estimatedCents).toBe(19_900);
     expect(painting.requiresReview).toBe(true);

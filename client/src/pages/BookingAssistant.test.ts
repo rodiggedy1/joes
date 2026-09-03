@@ -21,7 +21,7 @@ describe("Good Joe booking price book", () => {
       startingPrice: 119,
       detail: "One helper per hour · two-hour minimum · no truck",
     });
-    expect(flow?.fields.map(field => field.label)).toEqual(["Help needed", "Helpers", "Duration", "Move size"]);
+    expect(flow?.fields.map(field => field.label)).toEqual(["Help needed", "Helpers", "Duration", "Certificate of insurance", "Boxes or materials", "Building access"]);
   });
 
   it("keeps every approved service price and scope-choice set in the checkout catalog", () => {
@@ -30,16 +30,16 @@ describe("Good Joe booking price book", () => {
       price: flow.startingPrice,
       fields: flow.fields.map(field => field.label),
     }))).toEqual([
-      { service: "Home cleaning", price: 149, fields: ["Cleaning type", "Home size", "Bathrooms"] },
+      { service: "Home cleaning", price: 149, fields: ["Bedrooms", "Bathrooms", "Planned service time", "Cleaning type"] },
       { service: "TV mounting", price: 149, fields: ["TV count", "TV size", "Wall & mount"] },
-      { service: "Furniture assembly", price: 119, fields: ["Item type", "Item size", "Item count"] },
-      { service: "Picture hanging", price: 99, fields: ["Items to hang", "Wall type", "Access"] },
+      { service: "Furniture assembly", price: 119, fields: ["Small item count", "Medium item count", "Large item count", "Planned service time", "Additional purchase or haul"] },
+      { service: "Picture hanging", price: 99, fields: ["Small item count", "Large or heavy item count", "Shelves to install", "Ladder height", "Planned service time"] },
       { service: "Minor home repairs", price: 129, fields: ["Repair type", "Task count", "Parts or hardware"] },
-      { service: "Handyman visit", price: 129, fields: ["Job type", "Job count", "Parts or hardware"] },
+      { service: "Handyman visit", price: 129, fields: ["What needs help?", "How many tasks?", "Parts or hardware", "Planned service time"] },
       { service: "Plumbing help", price: 159, fields: ["Issue", "Access", "Urgency"] },
-      { service: "Electrical & lighting", price: 149, fields: ["Project", "Item count", "Access"] },
+      { service: "Electrical & lighting", price: 149, fields: ["Light fixtures", "Dimmers or switches", "Ceiling fans", "Ladder height", "Wiring access", "Planned service time"] },
       { service: "Interior painting", price: 199, fields: ["Project type", "Paint & prep", "Access"] },
-      { service: "Moving help", price: 119, fields: ["Help needed", "Helpers", "Duration", "Move size"] },
+      { service: "Moving help", price: 119, fields: ["Help needed", "Helpers", "Duration", "Certificate of insurance", "Boxes or materials", "Building access"] },
       { service: "Lawn & yard care", price: 49, fields: ["Yard size", "Service", "Condition"] },
       { service: "Junk removal", price: 129, fields: ["Load size", "Pickup location", "Items"] },
       { service: "Pressure washing", price: 99, fields: ["Area", "Size", "Access"] },

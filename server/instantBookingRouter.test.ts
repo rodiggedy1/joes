@@ -45,11 +45,11 @@ describe("auth.bookAndStartAccount", () => {
     const result = await caller.auth.bookAndStartAccount({
       service: "Handyman visit",
       title: "Handyman visit request",
-      customerRequest: "Job type: Small repair.",
+      customerRequest: "What needs help?: Rehang a loose cabinet door.",
       timeWindow: "Tomorrow · 10 AM",
       address: "123 Example Street",
       quotedCents: 100,
-      scopeSelections: { "Job type": "Patch, caulk, or touch-up", "Job count": "A short list", "Parts or hardware": "I have them" },
+      scopeSelections: { "What needs help?": "Rehang a loose cabinet door.", "How many tasks?": "Two or three tasks", "Parts or hardware": "I have them", "Planned service time": "2.5 hours" },
       customerName: "Taylor Jordan",
       mobilePhone: "(415) 555-0123",
     });
@@ -57,7 +57,7 @@ describe("auth.bookAndStartAccount", () => {
     expect(createBrowserBookingAccount).toHaveBeenCalledWith({ name: "Taylor Jordan", phone: "+14155550123" });
     expect(createBookingForCustomer).toHaveBeenCalledWith(42, expect.objectContaining({
       service: "Handyman visit",
-      quotedCents: 21_400,
+      quotedCents: 22_900,
       estimateRequiresReview: false,
     }));
     expect(createSessionToken).toHaveBeenCalledWith("customer_browser_session", { name: "Taylor Jordan" });

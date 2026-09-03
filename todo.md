@@ -63,6 +63,8 @@
 - [x] Replace flat Good Joe starting-price display with a service-specific live estimate driven by every selected booking choice.
 - [x] Persist the calculated estimate in customer bookings and label it clearly in customer account and Operations views.
 - [x] Add calculation coverage for baseline, expanded-scope, and review-required service estimates before release.
+- [x] Re-audit Handy’s public booking choices service by service and compare them against Good Joe’s live estimate dropdowns before changing checkout inputs.
+- [x] Refine Furniture Assembly, Cleaning, Picture Hanging, Electrical, Moving Help, and Handyman checkout choices using the approved Handy-structured inputs while preserving Good Joe estimate safeguards.
 - [x] Diagnose and correct the failed first-admin bootstrap after Railway staff variables were applied.
 - [x] Align the runtime password policy with the approved 10-character contract so staff bootstrap failures do not silently reject valid credentials.
 - [x] Push the runtime staff-bootstrap fix to Railway and verify the approved Operations password is accepted.
