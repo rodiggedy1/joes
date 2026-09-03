@@ -2,6 +2,8 @@ export const bookableServiceNames = [
   "Home cleaning",
   "TV mounting",
   "Furniture assembly",
+  "Picture hanging",
+  "Minor home repairs",
   "Handyman visit",
   "Plumbing help",
   "Electrical & lighting",

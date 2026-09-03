@@ -46,6 +46,20 @@
 - [x] Constrain the account service cards to the same left/right boundaries as the account summary and booking rows.
 - [x] Show the first four service cards by default and reveal the remaining bookable services in place when selected.
 - [x] Launch the preselected Good Joe booking chat and checkout inside the customer account instead of navigating to the homepage.
+- [ ] Research Handy’s public booking-flow pricing and scope rules in Washington, DC 20001 for every Good Joe service.
+- [ ] Submit approved non-booking Handy quote requests with the designated research email and document disclosed Washington, DC prices.
+- [x] Produce a Good Joe customer-facing starting-price and internal scope-rule proposal for approval before changing live prices.
+- [x] Document the actual booking choices for every Good Joe service, using Handy where it has a direct flow and comparable Washington, DC sources where it does not.
+- [x] Approve the proposed Washington, DC starting prices for all Good Joe services other than Interior Painting.
+- [x] Finalize the Washington, DC Interior Painting starting price, scope choices, and review triggers before implementation.
+- [x] Add a dedicated Good Joe Interior Painting public landing page with the approved $199 small-project starting point.
+- [x] Connect the Interior Painting landing-page entry to the shared Good Joe booking assistant.
+- [ ] Verify an Interior Painting booking launched from its landing page persists as the supported backend service in the customer account and Operations queue.
+- [x] Verify the Interior Painting landing-page CTA opens the supported booking flow through local interactive review.
+- [x] Apply the approved Washington, DC starting-price catalog and service-specific booking choices to the shared Good Joe checkout.
+- [x] Add an automated UI-level Interior Painting CTA handoff test that proves the landing-page action selects the supported catalog-backed flow.
+- [x] Verify each approved price entry against the shared checkout and resolve any intentionally grouped services such as Picture Hanging and Minor Home Repairs.
+- [x] Add catalog-wide tests for every shared checkout flow’s approved starting price and scope-choice set.
 - [x] Diagnose and correct the failed first-admin bootstrap after Railway staff variables were applied.
 - [x] Align the runtime password policy with the approved 10-character contract so staff bootstrap failures do not silently reject valid credentials.
 - [x] Push the runtime staff-bootstrap fix to Railway and verify the approved Operations password is accepted.

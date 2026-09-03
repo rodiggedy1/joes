@@ -14,6 +14,7 @@ import LawnCare from "./pages/LawnCare";
 import MovingHelp from "./pages/MovingHelp";
 import JunkRemoval from "./pages/JunkRemoval";
 import PressureWashing from "./pages/PressureWashing";
+import InteriorPainting from "./pages/InteriorPainting";
 import GoodJoeBranding from "./components/GoodJoeBranding";
 import Account from "./pages/Account";
 import Operations from "./pages/Operations";
@@ -32,6 +33,7 @@ function Router() {
       <Route path={"/services/moving-help"} component={MovingHelp} />
       <Route path={"/services/junk-removal"} component={JunkRemoval} />
       <Route path={"/services/pressure-washing"} component={PressureWashing} />
+      <Route path={"/services/interior-painting"} component={InteriorPainting} />
       <Route path={"/account"} component={Account} />
       <Route path={"/operations"} component={Operations} />
       <Route path={"/404"} component={NotFound} />

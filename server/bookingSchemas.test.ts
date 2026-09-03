@@ -14,9 +14,11 @@ describe("Good Joe booking input contracts", () => {
     expect(result.success).toBe(true);
   });
 
-  it("rejects invalid customer requests and impossible price data", () => {
+  it("accepts every approved service label and rejects unsupported requests or impossible price data", () => {
     expect(createBookingSchema.safeParse({ service: "", title: "", customerRequest: "", quotedCents: -1 }).success).toBe(false);
-    expect(createBookingSchema.safeParse({ service: "Picture hanging", title: "Picture hanging request", customerRequest: "Hang a picture", quotedCents: 12900 }).success).toBe(false);
+    expect(createBookingSchema.safeParse({ service: "Picture hanging", title: "Picture hanging request", customerRequest: "Hang a picture", quotedCents: 9900 }).success).toBe(true);
+    expect(createBookingSchema.safeParse({ service: "Minor home repairs", title: "Minor home repairs request", customerRequest: "Fix a drawer", quotedCents: 12900 }).success).toBe(true);
+    expect(createBookingSchema.safeParse({ service: "Roof replacement", title: "Roof request", customerRequest: "Replace a roof", quotedCents: 20000 }).success).toBe(false);
   });
 
   it("accepts an instant booking account only with a usable mobile number", () => {
