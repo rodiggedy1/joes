@@ -60,6 +60,9 @@
 - [x] Add an automated UI-level Interior Painting CTA handoff test that proves the landing-page action selects the supported catalog-backed flow.
 - [x] Verify each approved price entry against the shared checkout and resolve any intentionally grouped services such as Picture Hanging and Minor Home Repairs.
 - [x] Add catalog-wide tests for every shared checkout flow’s approved starting price and scope-choice set.
+- [x] Replace flat Good Joe starting-price display with a service-specific live estimate driven by every selected booking choice.
+- [x] Persist the calculated estimate in customer bookings and label it clearly in customer account and Operations views.
+- [x] Add calculation coverage for baseline, expanded-scope, and review-required service estimates before release.
 - [x] Diagnose and correct the failed first-admin bootstrap after Railway staff variables were applied.
 - [x] Align the runtime password policy with the approved 10-character contract so staff bootstrap failures do not silently reject valid credentials.
 - [x] Push the runtime staff-bootstrap fix to Railway and verify the approved Operations password is accepted.

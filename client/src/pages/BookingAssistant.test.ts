@@ -21,7 +21,7 @@ describe("Good Joe booking price book", () => {
       startingPrice: 119,
       detail: "One helper per hour · two-hour minimum · no truck",
     });
-    expect(flow?.fields.map(field => field.label)).toEqual(["Help needed", "Helpers", "Move size"]);
+    expect(flow?.fields.map(field => field.label)).toEqual(["Help needed", "Helpers", "Duration", "Move size"]);
   });
 
   it("keeps every approved service price and scope-choice set in the checkout catalog", () => {
@@ -39,7 +39,7 @@ describe("Good Joe booking price book", () => {
       { service: "Plumbing help", price: 159, fields: ["Issue", "Access", "Urgency"] },
       { service: "Electrical & lighting", price: 149, fields: ["Project", "Item count", "Access"] },
       { service: "Interior painting", price: 199, fields: ["Project type", "Paint & prep", "Access"] },
-      { service: "Moving help", price: 119, fields: ["Help needed", "Helpers", "Move size"] },
+      { service: "Moving help", price: 119, fields: ["Help needed", "Helpers", "Duration", "Move size"] },
       { service: "Lawn & yard care", price: 49, fields: ["Yard size", "Service", "Condition"] },
       { service: "Junk removal", price: 129, fields: ["Load size", "Pickup location", "Items"] },
       { service: "Pressure washing", price: 99, fields: ["Area", "Size", "Access"] },

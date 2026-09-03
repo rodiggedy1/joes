@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { User } from "../drizzle/schema";
 
 const createBrowserBookingAccount = vi.hoisted(() => vi.fn());
@@ -29,6 +29,8 @@ const customer: User = {
 };
 
 describe("auth.bookAndStartAccount", () => {
+  beforeEach(() => vi.clearAllMocks());
+
   it("creates the immediate customer account, saves its booking, and writes a session cookie", async () => {
     createBrowserBookingAccount.mockResolvedValue(customer);
     createBookingForCustomer.mockResolvedValue({ booking: { id: 99, bookingCode: "GJ-TEST" }, events: [] });
@@ -46,15 +48,40 @@ describe("auth.bookAndStartAccount", () => {
       customerRequest: "Job type: Small repair.",
       timeWindow: "Tomorrow · 10 AM",
       address: "123 Example Street",
-      quotedCents: 17900,
+      quotedCents: 100,
+      scopeSelections: { "Job type": "Patch, caulk, or touch-up", "Job count": "A short list", "Parts or hardware": "I have them" },
       customerName: "Taylor Jordan",
       mobilePhone: "(415) 555-0123",
     });
 
     expect(createBrowserBookingAccount).toHaveBeenCalledWith({ name: "Taylor Jordan", phone: "+14155550123" });
-    expect(createBookingForCustomer).toHaveBeenCalledWith(42, expect.objectContaining({ service: "Handyman visit" }));
+    expect(createBookingForCustomer).toHaveBeenCalledWith(42, expect.objectContaining({
+      service: "Handyman visit",
+      quotedCents: 21_400,
+      estimateRequiresReview: false,
+    }));
     expect(createSessionToken).toHaveBeenCalledWith("customer_browser_session", { name: "Taylor Jordan" });
     expect(cookie).toHaveBeenCalledWith(expect.any(String), "signed-browser-session", expect.objectContaining({ httpOnly: true, maxAge: expect.any(Number) }));
     expect(result.user.id).toBe(42);
+  });
+
+  it("recalculates an authenticated customer estimate instead of accepting a client total", async () => {
+    createBookingForCustomer.mockResolvedValue({ booking: { id: 100, bookingCode: "GJ-RETURNING" }, events: [] });
+    const caller = appRouter.createCaller({ user: customer, staffUser: null, req: { protocol: "https", headers: {} } as any, res: {} as any });
+
+    await caller.bookings.create({
+      service: "TV mounting",
+      title: "TV mounting request",
+      customerRequest: "One standard TV.",
+      address: "123 Example Street",
+      quotedCents: 1,
+      scopeSelections: { "TV count": "Two TVs", "TV size": "44–65 inches", "Wall & mount": "Drywall and I need a mount" },
+    });
+
+    expect(createBookingForCustomer).toHaveBeenCalledWith(42, expect.objectContaining({
+      service: "TV mounting",
+      quotedCents: 32_800,
+      estimateRequiresReview: false,
+    }));
   });
 });

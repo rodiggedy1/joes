@@ -180,6 +180,8 @@ type NewBooking = {
   scheduledFor?: Date | null;
   address?: string | null;
   quotedCents: number;
+  scopeSelections?: Record<string, string>;
+  estimateRequiresReview?: boolean;
 };
 
 function bookingCode() {
@@ -206,6 +208,8 @@ export async function createBookingForCustomer(customerId: number, input: NewBoo
     timeWindow: input.timeWindow ?? null,
     address: input.address ?? null,
     quotedCents: input.quotedCents,
+    scopeSelections: input.scopeSelections ?? null,
+    estimateRequiresReview: input.estimateRequiresReview ?? false,
     status: "requested",
     paymentStatus: "pending",
   }).$returningId();
@@ -216,8 +220,12 @@ export async function createBookingForCustomer(customerId: number, input: NewBoo
   await db.insert(bookingEvents).values({
     bookingId,
     actor: "system",
-    title: "Preferred appointment saved",
-    detail: input.timeWindow ? `${input.timeWindow} · Good Joe received your request and will confirm the service window.` : "Good Joe received your request and is preparing the next step.",
+    title: input.estimateRequiresReview ? "Estimate saved for Good Joe review" : "Preferred appointment saved",
+    detail: input.estimateRequiresReview
+      ? `Estimated total: $${(input.quotedCents / 100).toFixed(0)} · Good Joe will confirm the right professional, scope, and final price before scheduling.`
+      : input.timeWindow
+        ? `${input.timeWindow} · Estimated total: $${(input.quotedCents / 100).toFixed(0)} · Good Joe received your request and will confirm the service window.`
+        : `Estimated total: $${(input.quotedCents / 100).toFixed(0)} · Good Joe received your request and is preparing the next step.`,
   });
 
   const booking = await getBookingForCustomer(customerId, bookingId);

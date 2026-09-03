@@ -11,7 +11,8 @@ export const createBookingSchema = z.object({
   timeWindow: z.string().trim().min(2).max(80).nullable().optional(),
   scheduledFor: z.date().nullable().optional(),
   address: z.string().trim().max(1_000).nullable().optional(),
-  quotedCents: z.number().int().positive().max(5_000_000),
+  quotedCents: z.number().int().positive().max(5_000_000).optional(),
+  scopeSelections: z.record(z.string(), z.string()).default({}),
 });
 
 const mobilePhoneSchema = z.string().trim().refine(value => {

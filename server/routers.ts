@@ -10,18 +10,22 @@ import { TRPCError } from "@trpc/server";
 import { authenticateStaffWithPassword } from "./staffAuth";
 import { bookingsRouter } from "./routers/bookings";
 import { operationsRouter } from "./routers/operations";
+import { calculateBookingEstimate } from "../shared/bookingPricing";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
-    bookAndStartAccount: publicProcedure.input(instantBookingSchema).mutation(({ ctx, input }) => bookAndStartAccount(ctx, input, {
-      createCustomer: createBrowserBookingAccount,
-      createBooking: createBookingForCustomer,
-      createSessionToken: sdk.createSessionToken.bind(sdk),
-      cookieOptions: getSessionCookieOptions,
-    })),
+    bookAndStartAccount: publicProcedure.input(instantBookingSchema).mutation(({ ctx, input }) => {
+      const estimate = calculateBookingEstimate(input.service, input.scopeSelections);
+      return bookAndStartAccount(ctx, { ...input, quotedCents: estimate.estimatedCents, estimateRequiresReview: estimate.requiresReview }, {
+        createCustomer: createBrowserBookingAccount,
+        createBooking: createBookingForCustomer,
+        createSessionToken: sdk.createSessionToken.bind(sdk),
+        cookieOptions: getSessionCookieOptions,
+      });
+    }),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });

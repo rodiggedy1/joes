@@ -5,7 +5,7 @@ import type { z } from "zod";
 import type { instantBookingSchema } from "./bookingSchemas";
 import type { TrpcContext } from "./_core/context";
 
-type InstantBookingInput = z.infer<typeof instantBookingSchema>;
+type InstantBookingInput = z.infer<typeof instantBookingSchema> & { quotedCents: number; estimateRequiresReview?: boolean };
 
 type CustomerSessionContext = Pick<TrpcContext, "user" | "req" | "res">;
 

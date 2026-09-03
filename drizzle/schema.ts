@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, int, json, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -72,6 +72,8 @@ export const bookings = mysqlTable("bookings", {
   timeWindow: varchar("time_window", { length: 80 }),
   address: text("address"),
   quotedCents: int("quoted_cents").notNull(),
+  scopeSelections: json("scope_selections").$type<Record<string, string>>(),
+  estimateRequiresReview: boolean("estimate_requires_review").default(false).notNull(),
   providerName: varchar("provider_name", { length: 160 }),
   providerEta: varchar("provider_eta", { length: 80 }),
   createdAt: timestamp("created_at").defaultNow().notNull(),

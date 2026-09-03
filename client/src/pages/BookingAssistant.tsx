@@ -6,6 +6,7 @@ import { getBookingPrefill } from "@/lib/bookingPrefill";
 import { appointmentWindows, formatPreferredAppointment, formatPreferredDate, selectedAppointmentStart, type AppointmentWindow } from "@/lib/preferredAppointment";
 import { PreferredAppointmentCalendar } from "@/components/PreferredAppointmentCalendar";
 import type { BookableServiceName } from "@shared/bookableServices";
+import { calculateBookingEstimate } from "@shared/bookingPricing";
 
 type Field = { label: string; options: string[] };
 type Flow = { service: BookableServiceName; matches: string[]; startingPrice: number; time: string; detail: string; payment: string; fields: Field[] };
@@ -21,7 +22,7 @@ export const bookingFlows: Flow[] = [
   { service: "Plumbing help", matches: ["plumb", "faucet", "drain", "toilet", "leak", "sink"], startingPrice: 159, time: "Tomorrow · 10:00 AM", detail: "Minor diagnostic or repair visit", payment: "Final scope confirmed before payment", fields: [{ label: "Issue", options: ["Faucet or fixture", "Drain issue", "Toilet issue"] }, { label: "Access", options: ["Shutoff and plumbing are accessible", "Access is limited", "Not sure"] }, { label: "Urgency", options: ["Today if possible", "This week", "Not urgent"] }] },
   { service: "Electrical & lighting", matches: ["electrical", "light", "outlet", "fixture", "switch", "fan"], startingPrice: 149, time: "Thursday · 2:00 PM", detail: "One existing-access fixture or switch task", payment: "Final scope confirmed before payment", fields: [{ label: "Project", options: ["Light fixture", "Outlet or switch", "Ceiling fan or device"] }, { label: "Item count", options: ["One item", "Two items", "Three or more"] }, { label: "Access", options: ["Existing wiring is accessible", "I need a ladder or am not sure", "New wiring or panel work"] }] },
   { service: "Interior painting", matches: ["paint", "painting", "wall color"], startingPrice: 199, time: "This week · Consultation", detail: "Paint-ready touch-up or one standard accent wall", payment: "Final scope confirmed before payment", fields: [{ label: "Project type", options: ["Touch-ups", "One accent wall", "Room or multiple rooms"] }, { label: "Paint & prep", options: ["Paint is ready and wall is sound", "I need paint guidance", "Patching, prep, or wallpaper removal"] }, { label: "Access", options: ["Standard wall height", "Ceiling or trim included", "High access or furniture moving"] }] },
-  { service: "Moving help", matches: ["move", "moving", "unload", "load", "couch", "truck"], startingPrice: 119, time: "Saturday · 11:00 AM", detail: "One helper per hour · two-hour minimum · no truck", payment: "Final scope confirmed before payment", fields: [{ label: "Help needed", options: ["Load my truck", "Unload my truck", "Move items inside my home"] }, { label: "Helpers", options: ["One helper", "Two helpers", "Three helpers"] }, { label: "Move size", options: ["A few items", "Studio / one room", "One to two rooms"] }] },
+  { service: "Moving help", matches: ["move", "moving", "unload", "load", "couch", "truck"], startingPrice: 119, time: "Saturday · 11:00 AM", detail: "One helper per hour · two-hour minimum · no truck", payment: "Final scope confirmed before payment", fields: [{ label: "Help needed", options: ["Load my truck", "Unload my truck", "Move items inside my home"] }, { label: "Helpers", options: ["One helper", "Two helpers", "Three helpers"] }, { label: "Duration", options: ["Two hours", "Three hours", "Four or more hours"] }, { label: "Move size", options: ["A few items", "Studio / one room", "One to two rooms"] }] },
   { service: "Lawn & yard care", matches: ["lawn", "yard", "mow", "trimming", "garden"], startingPrice: 49, time: "Friday · 9–11 AM", detail: "Small maintained lawn · mow, edge, and blow", payment: "Final scope confirmed before payment", fields: [{ label: "Yard size", options: ["Small", "Medium", "Large"] }, { label: "Service", options: ["Mow, edge, and blow", "Trimming or weeding", "Seasonal cleanup"] }, { label: "Condition", options: ["Regularly maintained", "Overgrown", "Not sure"] }] },
   { service: "Junk removal", matches: ["junk", "haul", "appliance", "garage", "couch"], startingPrice: 129, time: "Tomorrow · 4–6 PM", detail: "Small curbside or one-eighth truckload pickup", payment: "Final scope confirmed before payment", fields: [{ label: "Load size", options: ["A few items / one-eighth truck", "Quarter to half truck", "More than half a truck"] }, { label: "Pickup location", options: ["Curbside", "Garage / ground floor", "Stairs or elevator"] }, { label: "Items", options: ["Household items", "Furniture or mattress", "Appliance, electronics, or other"] }] },
   { service: "Pressure washing", matches: ["pressure", "driveway", "patio", "siding", "walkway"], startingPrice: 99, time: "Friday · 1–3 PM", detail: "Small ground-level patio or walkway", payment: "Final scope confirmed before payment", fields: [{ label: "Area", options: ["Patio or walkway", "Driveway", "Siding, deck, or porch"] }, { label: "Size", options: ["Small", "Medium", "Large or multiple areas"] }, { label: "Access", options: ["Ground level with outdoor water", "No outdoor water", "Two stories, roof, or delicate surface"] }] },
@@ -94,6 +95,8 @@ export default function BookingAssistant({ open, requestText, onClose }: { open:
     setFormOpen(true);
   };
   const selectedAppointment = preferredDate && preferredWindow ? formatPreferredAppointment(preferredDate, preferredWindow) : "";
+  const scopeSelections = Object.fromEntries(selectedFlow.fields.flatMap(field => answers[field.label] ? [[field.label, answers[field.label]]] : []));
+  const estimate = calculateBookingEstimate(selectedFlow.service, scopeSelections);
   const ready = selectedFlow.fields.every(field => answers[field.label]) && preferredDate && preferredWindow && answers.Address && (isAuthenticated || (answers.Name && answers.Phone));
   const payload = () => ({
     service: selectedFlow.service,
@@ -102,7 +105,8 @@ export default function BookingAssistant({ open, requestText, onClose }: { open:
     timeWindow: selectedAppointment || null,
     scheduledFor: preferredDate && preferredWindow ? selectedAppointmentStart(preferredDate, preferredWindow) : null,
     address: answers.Address,
-    quotedCents: selectedFlow.startingPrice * 100,
+    quotedCents: estimate.estimatedCents,
+    scopeSelections,
   });
   const save = () => {
     const booking = payload();
@@ -132,7 +136,7 @@ export default function BookingAssistant({ open, requestText, onClose }: { open:
           </div>
           {isAuthenticated && <p className="checkout-note">Booking to <strong>{user?.name || "your Good Joe account"}</strong>. Your saved details are ready; you can update the service address for this visit.</p>}
           {reviewed && <div className="checkout-summary"><div><span>Preferred appointment</span><strong>{selectedAppointment}</strong></div>{selectedFlow.fields.map(field => <div key={field.label}><span>{field.label}</span><strong>{answers[field.label]}</strong></div>)}</div>}
-          <div className="checkout-total"><span>Starting at</span><strong>${selectedFlow.startingPrice}</strong><small>{selectedFlow.payment}</small></div>
+          <div className={`checkout-total ${estimate.requiresReview ? "needs-review" : ""}`}><span>{estimate.requiresReview ? "Estimate · review required" : "Estimated total"}</span><strong>${(estimate.estimatedCents / 100).toFixed(0)}</strong><small>{estimate.requiresReview ? "This scope needs a Good Joe review before a final price or appointment is confirmed." : "Based on your selected scope. Good Joe confirms the final price before payment."}</small>{estimate.lineItems.length > 1 && <div className="estimate-lines">{estimate.lineItems.slice(1).map(item => <span key={item.label}>{item.label}<b>+${(item.cents / 100).toFixed(0)}</b></span>)}</div>}</div>
           {reviewed ? <button className="btn wide" type="button" onClick={save} disabled={saving}>{saving ? "Saving your booking…" : "Book & open my account →"}</button> : <button className="btn wide" disabled={!ready}>Review booking →</button>}
           {!isAuthenticated && <p className="checkout-note">Your booking opens your Good Joe account immediately. Your selected appointment is a preference until Good Joe confirms it.</p>}
           {bookingError && <p className="checkout-error">We couldn’t save this booking. Please try again.</p>}
