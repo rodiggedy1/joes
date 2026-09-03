@@ -8,7 +8,8 @@ import { useAuth } from "@/_core/hooks/useAuth";
 const brandText = (value: string) => value
   .replace(/Good House Co\./g, "Good Joe")
   .replace(/Good House Guide/g, "Good Joe Guide")
-  .replace(/Good House/g, "Good Joe");
+  .replace(/Good House/g, "Good Joe")
+  .replace(/The good kind of help for home/g, "Consider it handled.");
 
 function brandTree(node: Node) {
   if (node.nodeType === Node.TEXT_NODE && node.nodeValue && !node.parentElement?.closest("script, style")) {

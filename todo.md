@@ -73,6 +73,8 @@
 - [x] Align the runtime password policy with the approved 10-character contract so staff bootstrap failures do not silently reject valid credentials.
 - [x] Push the runtime staff-bootstrap fix to Railway and verify the approved Operations password is accepted.
 - [x] Complete one real production Operations sign-in for `rohan@innclusive.com` after the fix release.
+- [x] Update the rendered Good Joe homepage tagline to “Consider it handled.” through the global brand treatment.
+- [ ] Replace remaining hardcoded public tagline strings in source and verify the new tagline across public pages and the live site.
 - [ ] Add safe internal diagnostics that distinguish staff bootstrap failures from incorrect credentials without exposing secrets.
 - [ ] Verify server-enforced admin authorization and customer data isolation without creating fabricated records.
 - [x] Include the customer booking-prefill contract in the enforced automated test suite.
