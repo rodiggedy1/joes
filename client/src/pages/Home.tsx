@@ -4,8 +4,9 @@
  */
 import { useEffect, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { ArrowRight, ArrowUp, CalendarDays, ChevronDown, Grid2X2, Leaf, LockKeyhole, ShieldCheck, Sparkles, Star, Tv, Wrench } from "lucide-react";
+import { ArrowRight, ArrowUp, CalendarDays, ChevronDown, Grid2X2, LockKeyhole, ShieldCheck, Sparkles, Star } from "lucide-react";
 import BookingAssistant from "./BookingAssistant";
+import { popularQuickRequests } from "@/lib/popularRequests";
 import "./ReferenceHero.css";
 import "./ServiceMoments.css";
 
@@ -109,7 +110,7 @@ export default function Home() {
             <div className="reference-guide-main"><div className="eyebrow">Good Joe Guide</div><h2>What can we help with?</h2><p>Ask a question or describe the job. When you&apos;re ready, the right booking form is one click away.</p>
             <div className="reference-input-wrap"><textarea value={embedInput} onChange={(event) => setEmbedInput(event.target.value)} className="inputbox" aria-label="Describe what your home needs" placeholder={heroGuidePrompts[heroPromptIndex]} /><button onClick={askEmbedded} aria-label="Send request to Joe"><ArrowUp aria-hidden="true" /></button></div>
             <button className="btn reference-guide-action" onClick={askEmbedded}>Ask Joe <Sparkles aria-hidden="true" /></button>
-            <div className="reference-popular"><strong>Popular requests</strong><div className="chips reference-chips"><button className="chip" onClick={() => setEmbedInput("Deep clean my 3 bedroom house tomorrow morning")}><Sparkles aria-hidden="true" />Deep cleaning</button><button className="chip" onClick={() => setEmbedInput("Mount my 65 inch TV tomorrow")}><Tv aria-hidden="true" />TV mounting</button><button className="chip" onClick={() => setEmbedInput("I need a handyman Saturday morning")}><Wrench aria-hidden="true" />Handyman</button><button className="chip" onClick={() => setEmbedInput("My backyard is getting out of control")}><Leaf aria-hidden="true" />Lawn care</button><button className="chip" onClick={() => setEmbedInput("I need move-in cleaning tomorrow")}><Sparkles aria-hidden="true" />Move in / out cleaning</button></div></div></div>
+            <div className="reference-popular"><strong>Popular requests</strong><div className="chips reference-chips">{popularQuickRequests.map(({ label, message, Icon }) => <button className="chip" key={label} onClick={() => setEmbedInput(message)}><Icon aria-hidden="true" />{label}</button>)}</div></div></div>
             <div className="reference-guide-footer"><div><div className="guide-avatar"><JoeMark className="joe-mark" /></div><span>Joe finds the right pros, books it, and keeps everything on track.</span></div><a href="#how">How it works <ArrowRight aria-hidden="true" /></a></div>
           </div>
         </section>
